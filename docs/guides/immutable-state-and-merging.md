@@ -1,5 +1,5 @@
 ---
-title: Immutable state and merging
+title: 不可变状态和合并
 nav: 3
 ---
 
