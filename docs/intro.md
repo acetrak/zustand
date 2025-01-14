@@ -1,32 +1,25 @@
 ---
-title: Introduction
-description: How to use Zustand
+title: 简介
+description: 如何使用 Zustand
 nav: 0
 ---
 
 ![Logo Zustand](./bear.jpg)
 
-A small, fast, and scalable bearbones state management solution.
-Zustand has a comfy API based on hooks.
-It isn't boilerplatey or opinionated,
-but has enough convention to be explicit and flux-like.
+一个小型、快速且可扩展的 Bearbones 状态管理解决方案。 Zustand 有一个基于 hooks 的舒适 API。它不是样板文件或固执己见，但有足够的惯例来明确和类似通量。
 
-Don't disregard it because it's cute, it has claws!
-Lots of time was spent to deal with common pitfalls,
-like the dreaded [zombie child problem],
-[React concurrency], and [context loss]
-between mixed renderers.
-It may be the one state manager in the React space that gets all of these right.
 
-You can try a live demo [here](https://codesandbox.io/s/dazzling-moon-itop4).
+不要因为它很可爱而忽视它，它有爪子！我们花费了大量时间来处理常见的陷阱，例如可怕的[僵尸子问题]、[React并发性]以及混合渲染器之间的[上下文丢失]。它可能是 React 领域中唯一能实现所有这些功能的状态管理器。
 
-[zombie child problem]: https://react-redux.js.org/api/hooks#stale-props-and-zombie-children
-[react concurrency]: https://github.com/bvaughn/rfcs/blob/useMutableSource/text/0000-use-mutable-source.md
-[context loss]: https://github.com/facebook/react/issues/13332
+您可以在这里尝试[演示](https://codesandbox.io/s/dazzling-moon-itop4).
 
-## Installation
+[僵尸子问题]: https://react-redux.js.org/api/hooks#stale-props-and-zombie-children
+[React并发性]: https://github.com/bvaughn/rfcs/blob/useMutableSource/text/0000-use-mutable-source.md
+[上下文丢失]: https://github.com/facebook/react/issues/13332
 
-Zustand is available as a package on NPM for use:
+## 安装
+
+Zustand 可作为 NPM 上的软件包使用：
 
 ```bash
 # NPM
@@ -34,11 +27,10 @@ npm install zustand
 # Or, use any package manager of your choice.
 ```
 
-## First create a store
+## 首先创建一个store
 
-Your store is a hook!
-You can put anything in it: primitives, objects, functions.
-The `set` function _merges_ state.
+你的store是一个钩子！您可以在其中放入任何内容：原语、对象、函数。
+`set` 函数合并状态
 
 ```js
 import { create } from 'zustand'
@@ -51,11 +43,9 @@ const useStore = create((set) => ({
 }))
 ```
 
-## Then bind your components, and that's it!
+## 然后绑定您的组件，就这样！​
 
-You can use the hook anywhere, without the need of providers.
-Select your state and the consuming component
-will re-render when that state changes.
+您可以在任何地方使用该钩子，而不需要提供者。选择您的状态，当该状态发生变化时，使用组件将重新渲染
 
 ```jsx
 function BearCounter() {

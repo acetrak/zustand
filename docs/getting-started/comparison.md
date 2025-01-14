@@ -1,25 +1,18 @@
 ---
-title: Comparison
-description: How Zustand stacks up against similar libraries
+title: 对比
+description: Zustand与其它库相比
 nav: 1
 ---
 
-Zustand is one of many state management libraries for React.
-On this page we will discuss Zustand
-in comparison to some of these libraries,
-including Redux, Valtio, Jotai, and Recoil.
+Zustand 是 React 的众多状态管理库之一。在本页中，我们将讨论 Zustand 与其中一些库的比较，包括 Redux、Valtio、Jotai 和 Recoil。
 
-Each library has its own strengths and weaknesses,
-and we will compare key differences and similarities between each.
+每个库都有自己的优点和缺点，我们将比较每个库之间的主要差异和相似之处。
 
 ## Redux
 
-### State Model (vs Redux)
+### 状态模型 (vs Redux)
 
-Conceptually, Zustand and Redux are quite similar,
-both are based on an immutable state model.
-However, Redux requires your app to be wrapped
-in context providers; Zustand does not.
+从概念上讲，Zustand 和 Redux 非常相似，都基于不可变状态模型。但是，Redux 要求您的应用程序包装在上下文提供程序中；祖斯坦没有。
 
 **Zustand**
 
@@ -126,12 +119,9 @@ const countSlice = createSlice({
 const countStore = configureStore({ reducer: countSlice.reducer })
 ```
 
-### Render Optimization (vs Redux)
+### 渲染优化 (vs Redux)
 
-When it comes to render optimizations within your app,
-there are no major differences in approach between Zustand and Redux.
-In both libraries it is recommended
-that you manually apply render optimizations by using selectors.
+当谈到应用程序内的渲染优化时，Zustand 和 Redux 之间的方法没有重大差异。在这两个库中，建议您使用选择器手动应用渲染优化。
 
 **Zustand**
 
@@ -232,12 +222,9 @@ const Component = () => {
 
 ## Valtio
 
-### State Model (vs Valtio)
+### 状态模型 (vs Valtio)
 
-Zustand and Valtio approach state management
-in a fundamentally different way.
-Zustand is based on the **immutable** state model,
-while Valtio is based on the **mutable** state model.
+Zustand 和 Valtio 以完全不同的方式进行状态管理。 Zustand基于不可变状态模型，而Valtio基于可变状态模型。
 
 **Zustand**
 
@@ -263,12 +250,9 @@ const state = proxy({ obj: { count: 0 } })
 state.obj.count += 1
 ```
 
-### Render Optimization (vs Valtio)
+### 渲染优化 (vs Valtio)
 
-The other difference between Zustand and Valtio
-is Valtio makes render optimizations through property access.
-However, with Zustand, it is recommended that
-you manually apply render optimizations by using selectors.
+Zustand 和 Valtio 之间的另一个区别是 Valtio 通过属性访问进行渲染优化。但是，对于 Zustand，建议您使用选择器手动应用渲染优化。
 
 **Zustand**
 
@@ -306,11 +290,9 @@ const Component = () => {
 
 ## Jotai
 
-### State Model (vs Jotai)
+### 状态模型 (vs Jotai)
 
-There is one major difference between Zustand and Jotai.
-Zustand is a single store,
-while Jotai consists of primitive atoms that can be composed together.
+Zustand 和 Jotai 之间有一个主要区别。 Zustand 是一个单一的存储，而 Jotai 由可以组合在一起的原始原子组成。
 
 **Zustand**
 
@@ -342,11 +324,9 @@ import { atom } from 'jotai'
 const countAtom = atom<number>(0)
 ```
 
-### Render Optimization (vs Jotai)
+### 渲染优化 (vs Jotai)
 
-Jotai achieves render optimizations through atom dependency.
-However, with Zustand it is recommended that
-you manually apply render optimizations by using selectors.
+Jotai通过原子依赖实现渲染优化。但是，对于 Zustand，建议您使用选择器手动应用渲染优化。
 
 **Zustand**
 
@@ -391,13 +371,9 @@ const Component = () => {
 
 ## Recoil
 
-### State Model (vs Recoil)
+### 状态模型 (vs Recoil)
 
-The difference between Zustand and Recoil
-is similar to that between Zustand and Jotai.
-Recoil depends on atom string keys
-instead of atom object referential identities.
-Additionally, Recoil needs to wrap your app in a context provider.
+Zustand 和 Recoil 之间的区别类似于 Zustand 和 Jotai 之间的区别。 Recoil 取决于原子字符串键而不是原子对象引用标识。此外，Recoil 需要将您的应用程序包装在上下文提供程序中。
 
 **Zustand**
 
@@ -430,12 +406,9 @@ const count = atom({
 })
 ```
 
-### Render Optimization (vs Recoil)
+### 渲染优化 (vs Recoil)
 
-Similar to previous optimization comparisons,
-Recoil makes render optimizations through atom dependency.
-Whereas with Zustand, it is recommended that
-you manually apply render optimizations by using selectors.
+与之前的优化比较类似，Recoil 通过原子依赖来进行渲染优化。而使用 Zustand，建议您使用选择器手动应用渲染优化。
 
 **Zustand**
 
@@ -479,6 +452,6 @@ const Component = () => {
 }
 ```
 
-## Npm Downloads Trend
+## Npm 下载趋势​
 
-- [Npm Downloads Trend of State Management Libraries for React](https://npm-stat.com/charts.html?package=zustand&package=jotai&package=valtio&package=%40reduxjs%2Ftoolkit&package=recoil)
+- [React 状态管理库 Npm 下载趋势](https://npm-stat.com/charts.html?package=zustand&package=jotai&package=valtio&package=%40reduxjs%2Ftoolkit&package=recoil)

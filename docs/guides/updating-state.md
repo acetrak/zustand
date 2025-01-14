@@ -1,13 +1,12 @@
 ---
-title: Updating state
+title: 更新状态
 nav: 2
 ---
 
-## Flat updates
+## 平面更新
 
-Updating state with Zustand is simple! Call the provided `set` function with
-the new state, and it will be shallowly merged with the existing state in the
-store. **Note** See next section for nested state.
+
+使用 Zustand 更新状态非常简单！使用新状态调用提供的 `set` 函数，它将与存储中的现有状态浅层合并。 **注意** 请参阅下一节了解嵌套状态。
 
 ```tsx
 import { create } from 'zustand'
@@ -56,9 +55,9 @@ function App() {
 }
 ```
 
-## Deeply nested object
+## 深度嵌套对象​
 
-If you have a deep state object like this:
+如果你有一个像这样的深度状态对象：
 
 ```ts
 type State = {
@@ -70,14 +69,11 @@ type State = {
 }
 ```
 
-Updating nested state requires some effort to ensure the process is completed
-immutably.
+更新嵌套状态需要付出一些努力才能确保该过程一成不变地完成。
 
-### Normal approach
+### 正常方法​
 
-Similar to React or Redux, the normal approach is to copy each level of the
-state object. This is done with the spread operator `...`, and by manually
-merging that in with the new state values. Like so:
+与 React 或 Redux 类似，正常的方法是复制状态对象的每个级别。这是通过扩展运算符 `...` 并通过手动将其与新状态值合并来完成的。就像这样：
 
 ```ts
   normalInc: () =>
@@ -95,47 +91,48 @@ merging that in with the new state values. Like so:
     })),
 ```
 
-This is very long! Let's explore some alternatives that will make your life
-easier.
+这很长！让我们探索一些可以让您的生活更轻松的替代方案。
 
-### With Immer
+### 配合Immer使用
 
-Many people use [Immer](https://github.com/immerjs/immer) to update nested
-values. Immer can be used anytime you need to update nested state such as in
-React, Redux and of course, Zustand!
 
-You can use Immer to shorten your state updates for deeply nested object. Let's
-take a look at an example:
+许多人使用 Immer 来更新嵌套值。 [Immer](https://github.com/immerjs/immer)  可以在您需要更新嵌套状态的任何时候使用，例如在 React、Redux，当然还有 Zustand 中！
+
+您可以使用 Immer 来缩短深度嵌套对象的状态更新。让我们看一个例子：
+
 
 ```ts
   immerInc: () =>
     set(produce((state: State) => { ++state.deep.nested.obj.count })),
 ```
 
-What a reduction! Please take note of the [gotchas listed here](../integrations/immer-middleware.md).
 
-### With optics-ts
+减少多少啊！请注意此处列出的[问题](../integrations/immer-middleware.md)。
 
-There is another option with [optics-ts](https://github.com/akheron/optics-ts/):
+### 配合optics-ts使用
+
+
+[optics-ts](https://github.com/akheron/optics-ts/) 还有另一种选择：
 
 ```ts
   opticsInc: () =>
     set(O.modify(O.optic<State>().path("deep.nested.obj.count"))((c) => c + 1)),
 ```
 
-Unlike Immer, optics-ts doesn't use proxies or mutation syntax.
+与 Immer 不同，optics-ts 不使用代理或突变语法。
 
-### With Ramda
+### 配合Ramda使用
 
-You can also use [Ramda](https://ramdajs.com/):
+
+您还可以使用 [Ramda](https://ramdajs.com/)
 
 ```ts
   ramdaInc: () =>
     set(R.modifyPath(["deep", "nested", "obj", "count"], (c) => c + 1)),
 ```
 
-Both ramda and optics-ts also work with types.
+ramda 和 optics-ts 也适用于类型。
 
-### CodeSandbox Demo
+### CodeSandbox 演示​
 
 https://codesandbox.io/s/zustand-normal-immer-optics-ramda-updating-ynn3o?file=/src/App.tsx
