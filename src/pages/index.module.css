@@ -1,0 +1,75 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.container {
+  width: 100%;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+
+ 
+}
+.code{
+  position: absolute;
+  top: 0;
+  right: 10vw;
+  margin-right: -60px;
+  width: 640px;
+  max-width: 80%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.container img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.container_inset{
+  margin: 4rem;
+  position: absolute;
+  inset: 0;
+}
+.codeContainer{
+  padding: 20px;
+  font-size: 1em;
+  background-color: var(--paper);
+  pointer-events: auto;
+}
+.header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.footer{
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  color: #cfcfcf;
+  font-size: 0.8rem;
+  background-color: rgba(153, 153, 153, 0.2);
+  width: fit-content;
+
+  border-radius: 0.2rem;
+  padding: 4px 8px;
+}
+@media screen and (max-width: 996px) {
+  .container_inset {
+    padding: 2rem;
+  }
+}
+
+ 
