@@ -1,21 +1,13 @@
 ---
-title: Persisting store data
+title: 持久存储数据
 nav: 20
 ---
 
-The Persist middleware enables you to store
-your Zustand state in a storage
-(e.g., `localStorage`, `AsyncStorage`, `IndexedDB`, etc.),
-thus persisting its data.
+Persist 中间件使您能够将 Zustand 状态存储在存储（例如 `localStorage`、`AsyncStorage`、`IndexedDB `等）中，从而持久保存其数据。
 
-Note that this middleware supports both
-synchronous storages, like `localStorage`,
-and asynchronous storages, like `AsyncStorage`,
-but using an asynchronous storage does come with a cost.
-See [Hydration and asynchronous storages](#hydration-and-asynchronous-storages)
-for more details.
+请注意，此中间件支持同步存储（如 `localStorage`）和异步存储（如 `AsyncStorage`），但使用异步存储确实会带来成本。有关更多详细信息，请参阅[水合和异步存储](#hydration-and-asynchronous-storages)。
 
-## Simple example
+## 简单的例子
 
 ```ts
 import { create } from 'zustand'
@@ -35,20 +27,17 @@ export const useBearStore = create(
 )
 ```
 
-## Options
+## 选项
 
 ### `name`
 
-This is the only required option.
-The given name is going to be the key
-used to store your Zustand state in the storage,
-so it must be unique.
+这是唯一必需的选项。给定的名称将是用于在存储中存储 Zustand 状态的密钥，因此它必须是唯一的。
 
 ### `storage`
 
 > Type: `() => StateStorage`
 
-The `StateStorage` can be imported with:
+`StateStorage` 可以通过以下方式导入：
 
 ```ts
 import { StateStorage } from 'zustand/middleware'
@@ -56,7 +45,7 @@ import { StateStorage } from 'zustand/middleware'
 
 > Default: `createJSONStorage(() => localStorage)`
 
-Enables you to use your own storage. Simply pass a function that returns the storage you want to use. It's recommended to use the [`createJSONStorage`](#createjsonstorage) helper function to create a `storage` object that is compliant with the `StateStorage` interface.
+使您能够使用自己的存储。只需传递一个返回您要使用的存储的函数即可。建议使用 [`createJSONStorage`](#createjsonstorage) 辅助函数创建符合 `StateStorage` 接口的`storage`对象。
 
 Example:
 
@@ -82,9 +71,9 @@ export const useBoundStore = create(
 
 > Default: `(state) => state`
 
-Enables you to pick some of the state's fields to be stored in the storage.
+使您能够选择要存储在存储中的state的某些字段。
 
-You could omit multiple fields using the following:
+您可以使用以下命令省略多个字段：
 
 ```ts
 export const useBoundStore = create(
@@ -104,7 +93,7 @@ export const useBoundStore = create(
 )
 ```
 
-Or you could allow only specific fields using the following:
+或者您可以使用以下命令仅允许特定字段：
 
 ```ts
 export const useBoundStore = create(
@@ -125,8 +114,7 @@ export const useBoundStore = create(
 
 > Type: `(state: Object) => ((state?: Object, error?: Error) => void) | void`
 
-This option enables you to pass a listener function
-that will be called when the storage is hydrated.
+此选项使您能够传递一个侦听器函数，该函数将在存储水合时调用。
 
 Example:
 
@@ -161,13 +149,7 @@ export const useBoundStore = create(
 
 > Default: `0`
 
-If you want to introduce a breaking change in your storage
-(e.g. renaming a field), you can specify a new version number.
-By default, if the version in the storage
-does not match the version in the code,
-the stored value won't be used.
-You can use the [migrate](#migrate) function (see below)
-to handle breaking changes in order to persist previously stored data.
+如果您想在存储中引入重大更改（例如重命名字段），您可以指定新的版本号。默认情况下，如果存储中的版本与代码中的版本不匹配，则不会使用存储的值。您可以使用迁移功能（见下文）来处理重大更改，以便保留以前存储的数据。
 
 ### `migrate`
 
@@ -175,13 +157,9 @@ to handle breaking changes in order to persist previously stored data.
 
 > Default: `(persistedState) => persistedState`
 
-You can use this option to handle versions migration.
-The migrate function takes the persisted state
-and the version number as arguments.
-It must return a state that is compliant
-to the latest version (the version in the code).
+您可以使用此选项来处理版本迁移。 migrate 函数将持久状态和版本号作为参数。它必须返回符合最新版本（代码中的版本）的状态。
 
-For instance, if you want to rename a field, you can use the following:
+例如，如果您想重命名一个字段，您可以使用以下命令：
 
 ```ts
 export const useBoundStore = create(
@@ -212,13 +190,9 @@ export const useBoundStore = create(
 
 > Default: `(persistedState, currentState) => ({ ...currentState, ...persistedState })`
 
-In some cases, you might want to use a custom merge function
-to merge the persisted value with the current state.
+在某些情况下，您可能希望使用自定义合并函数将持久值与当前状态合并。
 
-By default, the middleware does a shallow merge.
-The shallow merge might not be enough
-if you have partially persisted nested objects.
-For instance, if the storage contains the following:
+默认情况下，中间件进行浅合并。如果您有部分持久化的嵌套对象，则浅层合并可能还不够。例如，如果存储包含以下内容：
 
 ```ts
 {
@@ -228,7 +202,7 @@ For instance, if the storage contains the following:
 }
 ```
 
-But your Zustand store contains:
+但您的 Zustand 商店包含：
 
 ```ts
 {
@@ -239,8 +213,7 @@ But your Zustand store contains:
 }
 ```
 
-The shallow merge will erase the `baz` field from the `foo` object.
-One way to fix this would be to give a custom deep merge function:
+浅层合并将从 `foo` 对象中删除 `baz` 字段。解决此问题的一种方法是提供自定义深度合并函数：
 
 ```ts
 export const useBoundStore = create(
@@ -266,13 +239,11 @@ export const useBoundStore = create(
 
 > Default: `undefined`
 
-By default the store will be hydrated on initialization.
+默认情况下，存储将在初始化时被水化。
 
-In some applications you may need to control when the first hydration occurs.
-For example, in server-rendered apps.
+在某些应用中，您可能需要控制第一次水合发生的时间。例如，在服务器渲染的应用程序中。
 
-If you set `skipHydration`, the initial call for hydration isn't called,
-and it is left up to you to manually call `rehydrate()`.
+如果您设置了`skipHydration`，则不会调用最初的水合调用，而是由您手动调用`reHydration()`。
 
 ```ts
 export const useBoundStore = create(
@@ -308,9 +279,7 @@ export function StoreConsumer() {
 
 > Version: >=3.6.3
 
-The Persist API enables you to do a number of interactions
-with the Persist middleware
-from inside or outside of a React component.
+Persist API 使您能够从 React 组件内部或外部与 Persist 中间件进行多种交互。
 
 ### `getOptions`
 
@@ -318,7 +287,7 @@ from inside or outside of a React component.
 
 > Returns: Options of the Persist middleware
 
-For example, it can be used to obtain the storage name:
+例如，可用于获取存储名称：
 
 ```ts
 useBoundStore.persist.getOptions().name
@@ -328,10 +297,9 @@ useBoundStore.persist.getOptions().name
 
 > Type: `(newOptions: Partial<PersistOptions>) => void`
 
-Changes the middleware options.
-Note that the new options will be merged with the current ones.
+更改中间件选项。请注意，新选项将与当前选项合并。
 
-For instance, this can be used to change the storage name:
+例如，这可用于更改存储名称：
 
 ```ts
 useBoundStore.persist.setOptions({
@@ -339,7 +307,7 @@ useBoundStore.persist.setOptions({
 })
 ```
 
-Or even to change the storage engine:
+甚至更改存储引擎：
 
 ```ts
 useBoundStore.persist.setOptions({
@@ -351,7 +319,7 @@ useBoundStore.persist.setOptions({
 
 > Type: `() => void`
 
-Clears everything stored under the [name](#name) key.
+清除[name](#name)下存储的所有内容。
 
 ```ts
 useBoundStore.persist.clearStorage()
@@ -361,8 +329,7 @@ useBoundStore.persist.clearStorage()
 
 > Type: `() => Promise<void>`
 
-In some cases, you might want to trigger the rehydration manually.
-This can be done by calling the `rehydrate` method.
+在某些情况下，您可能需要手动触发`rehydrate` 。这可以通过调用再水化方法来完成。
 
 ```ts
 await useBoundStore.persist.rehydrate()
@@ -372,9 +339,7 @@ await useBoundStore.persist.rehydrate()
 
 > Type: `() => boolean`
 
-This is a non-reactive getter to check
-if the storage has been hydrated
-(note that it updates when calling [`rehydrate`](#rehydrate)).
+这是一个非反应式 getter，用于检查存储是否已被水化（请注意，它在调用[rehydrate](#rehydrate)时会更新）。
 
 ```ts
 useBoundStore.persist.hasHydrated()
@@ -386,7 +351,7 @@ useBoundStore.persist.hasHydrated()
 
 > Returns: Unsubscribe function
 
-This listener will be called when the hydration process starts.
+当水合过程开始时将调用此侦听器。
 
 ```ts
 const unsub = useBoundStore.persist.onHydrate((state) => {
@@ -403,7 +368,7 @@ unsub()
 
 > Returns: Unsubscribe function
 
-This listener will be called when the hydration process ends.
+当水合过程结束时将调用此侦听器。
 
 ```ts
 const unsub = useBoundStore.persist.onFinishHydration((state) => {
@@ -420,11 +385,11 @@ unsub()
 
 > Returns: `PersistStorage`
 
-This helper function enables you to create a [`storage`](#storage) object which is useful when you want to use a custom storage engine.
+此辅助函数使您能够创建一个[`storage`](#storage)对象，当您想要使用自定义存储引擎时，该对象非常有用。
 
-`getStorage` is a function that returns the storage engine with the properties `getItem`, `setItem`, and `removeItem`.
+`getStorage` 是一个返回具有 `getItem`、`setItem` 和 `removeItem` 属性的存储引擎的函数。
 
-`options` is an optional object that can be used to customize the serialization and deserialization of the data. `options.reviver` is a function that is passed to `JSON.parse` to deserialize the data. `options.replacer` is a function that is passed to `JSON.stringify` to serialize the data.
+`options` 是一个可选对象，可用于自定义数据的序列化和反序列化。 `options.reviver` 是一个传递给 `JSON.parse` 来反序列化数据的函数。 `options.replacer` 是传递给 `JSON.stringify` 以序列化数据的函数。
 
 ```ts
 import { createJSONStorage } from 'zustand/middleware'
@@ -445,57 +410,33 @@ const storage = createJSONStorage(() => sessionStorage, {
 })
 ```
 
-## Hydration and asynchronous storages
+## 水合和异步存储
 
-To explain what is the "cost" of asynchronous storages,
-you need to understand what is hydration.
+要解释什么是异步存储的“成本”，您需要了解什么是水合。
 
-In a nutshell, hydration is a process
-of retrieving persisted state from the storage
-and merging it with the current state.
+简而言之，水化是从存储中检索持久状态并将其与当前状态合并的过程
 
-The Persist middleware does two kinds of hydration:
-synchronous and asynchronous.
-If the given storage is synchronous (e.g., `localStorage`),
-hydration will be done synchronously.
-On the other hand, if the given storage is asynchronous (e.g., `AsyncStorage`),
-hydration will be done asynchronously (shocking, I know!).
+Persist 中间件执行两种水合作用：同步和异步。如果给定的存储是同步的（例如 `localStorage`），则水合作用将同步完成。另一方面，如果给定的存储是异步的（例如，`AsyncStorage`），则水合作用将异步完成（令人震惊，我知道！）。
 
-But what's the catch?
-With synchronous hydration,
-the Zustand store will already have been hydrated at its creation.
-In contrast, with asynchronous hydration,
-the Zustand store will be hydrated later on, in a microtask.
+但有什么问题呢？通过同步水化，Zustand 商店在创建时就已经被水化了。相比之下，通过异步水化，Zustand 存储将稍后在微任务中进行水化。
 
-Why does it matter?
-Asynchronous hydration can cause some unexpected behaviors.
-For instance, if you use Zustand in a React app,
-the store will **not** be hydrated at the initial render.
-In cases where your app depends on the persisted value at page load,
-you might want to wait until
-the store has been hydrated before showing anything.
-For example, your app might think the user
-is not logged in because it's the default,
-but in reality the store has not been hydrated yet.
+为什么这很重要？异步水合可能会导致一些意外的行为。例如，如果您在 React 应用程序中使用 Zustand，商店将不会在初始渲染时被水化。如果您的应用程序依赖于页面加载时的持久值，您可能需要等到商店水合后再显示任何内容。例如，您的应用程序可能会认为用户未登录，因为这是默认设置，但实际上商店尚未完成水化。
 
-If your app does depends on the persisted state at page load,
-see [_How can I check if my store has been hydrated_](#how-can-i-check-if-my-store-has-been-hydrated)
-in the [FAQ](#faq) section below.
+如果您的应用程序确实取决于页面加载时的持久状态，请参阅下面的[FAQ](#faq)解答部分中的[如何检查我的商店是否已被水化](#how-can-i-check-if-my-store-has-been-hydrated)。
 
-### Usage in Next.js
+### 在Next.js中使用
 
-NextJS uses Server Side Rendering, and it will compare the rendered component on the server with the one rendered on client.
-But since you are using data from browser to change your component, the two renders will differ and Next will throw a warning at you.
+NextJS 使用服务器端渲染，它会将服务器上渲染的组件与客户端上渲染的组件进行比较。但由于您正在使用浏览器中的数据来更改组件，因此两个渲染将会有所不同，并且 Next 会向您发出警告。
 
-The errors usually are:
+错误通常是：
 
-- Text content does not match server-rendered HTML
-- Hydration failed because the initial UI does not match what was rendered on the server
-- There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering
+- 文本内容与服务器呈现的 HTML 不匹配
+- 水合失败，因为初始 UI 与服务器上呈现的内容不匹配
+- 补水时出现错误。由于错误发生在 Suspense 边界之外，因此整个根将切换到客户端渲染
 
-To solve these errors, create a custom hook so that Zustand waits a little before changing your components.
+要解决这些错误，请创建一个自定义挂钩，以便 Zustand 在更改组件之前稍等片刻。
 
-Create a file with the following:
+创建一个包含以下内容的文件
 
 ```ts
 // useStore.ts
@@ -518,7 +459,7 @@ const useStore = <T, F>(
 export default useStore
 ```
 
-Now in your pages, you will use the hook a little bit differently:
+现在，在您的页面中，您将稍微不同地使用该钩子：
 
 ```ts
 // useBearStore.ts
@@ -549,16 +490,15 @@ import { useBearStore } from './stores/useBearStore'
 const bears = useStore(useBearStore, (state) => state.bears)
 ```
 
-Credits: [This reply to an issue](https://github.com/pmndrs/zustand/issues/938#issuecomment-1481801942), which points to [this blog post](https://dev.to/abdulsamad/how-to-use-zustands-persist-middleware-in-nextjs-4lb5).
+致谢：这是对[一个问题的回复](https://github.com/pmndrs/zustand/issues/938#issuecomment-1481801942)，指向[这篇博文](https://dev.to/abdulsamad/how-to-use-zustands-persist-middleware-in-nextjs-4lb5)。
 
 ## FAQ
 
-### How can I check if my store has been hydrated
+### 如何检查我的商店是否已补水
 
-There are a few different ways to do this.
+有几种不同的方法可以做到这一点。
 
-You can use the [`onRehydrateStorage`](#onrehydratestorage)
-listener function to update a field in the store:
+您可以使用 [`onRehydrateStorage`](#onrehydratestorage) 侦听器函数来更新存储中的字段：
 
 ```ts
 const useBoundStore = create(
@@ -594,7 +534,7 @@ export default function App() {
 }
 ```
 
-You can also create a custom `useHydration` hook:
+您还可以创建自定义 `useHydration` 挂钩：
 
 ```ts
 const useBoundStore = create(persist(...))
@@ -621,9 +561,9 @@ const useHydration = () => {
 }
 ```
 
-### How can I use a custom storage engine
+### 如何使用自定义存储引擎
 
-If the storage you want to use does not match the expected API, you can create your own storage:
+如果您要使用的存储与预期的 API 不匹配，您可以创建自己的存储：
 
 ```ts
 import { create } from 'zustand'
@@ -660,9 +600,9 @@ export const useBoundStore = create(
 )
 ```
 
-If you're using a type that `JSON.stringify()` doesn't support, you'll need to write your own serialization/deserialization code. However, if this is tedious, you can use third-party libraries to serialize and deserialize different types of data.
+如果您使用 `JSON.stringify()` 不支持的类型，则需要编写自己的序列化/反序列化代码。但是，如果这很乏味，您可以使用第三方库来序列化和反序列化不同类型的数据。
 
-For example, [Superjson](https://github.com/blitz-js/superjson) can serialize data along with its type, allowing the data to be parsed back to its original type upon deserialization
+例如，[Superjson](https://github.com/blitz-js/superjson) 可以序列化数据及其类型，从而允许在反序列化时将数据解析回其原始类型
 
 ```ts
 import superjson from 'superjson' //  can use anything: serialize-javascript, devalue, etc.
@@ -708,10 +648,9 @@ export const useBearStore = create<BearState>()(
 )
 ```
 
-### How can I rehydrate on storage event
+### 储存时如何补充水分
 
-You can use the Persist API to create your own implementation,
-similar to the example below:
+您可以使用 Persist API 创建自己的实现，类似于下面的示例：
 
 ```ts
 type StoreWithPersist = Mutate<StoreApi<State>, [["zustand/persist", unknown]]>
@@ -734,10 +673,9 @@ const useBoundStore = create(persist(...))
 withStorageDOMEvents(useBoundStore)
 ```
 
-### How do I use it with TypeScript
+### 如何将它与 TypeScript 一起使用
 
-Basic typescript usage doesn't require anything special
-except for writing `create<State>()(...)` instead of `create(...)`.
+基本的打字稿用法不需要​​任何特殊的东西，除了编写 `create<State>()(...)` 而不是 `create(...)` 。
 
 ```tsx
 import { create } from 'zustand'
@@ -763,12 +701,11 @@ export const useBearStore = create<MyState>()(
 )
 ```
 
-### How do I use it with Map and Set
+### 如何将其与 Map 和 Set 一起使用
 
-In order to persist object types such as `Map` and `Set`, they will need to be converted to JSON-serializable types such as an `Array` which can be done by defining a custom `storage` engine.
+为了持久保存 `Map` 和 `Set` 等对象类型，需要将它们转换为 `JSON` 可序列化类型（例如 `Array`），这可以通过定义自定义`storage`引擎来完成。
 
-Let's say your state uses `Map` to handle a list of `transactions`,
-then you can convert the `Map` into an `Array` in the `storage` prop which is shown below:
+假设您的状态使用 `Map` 来处理`transactions`列表，那么您可以将 `Map` 转换为`storage`属性中的`Array`，如下所示：
 
 ```ts
 

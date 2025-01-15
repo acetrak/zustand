@@ -1,18 +1,13 @@
 ---
-title: Third-party Libraries
+title: 第三方库
 nav: 19
 ---
 
-Zustand provides bear necessities for state management.
-Although it is great for most projects,
-some users wish to extend the library's feature set.
-This can be done using third-party libraries created by the community.
+Zustand 为状态管理提供熊必需品。尽管它对于大多数项目来说都很棒，但一些用户希望扩展该库的功能集。这可以使用社区创建的第三方库来完成。
 
-> Disclaimer: These libraries may have bugs, limited maintenance,
-> or other limitations, and are not officially recommended
-> by pmndrs or the Zustand maintainers.
-> This list aims to provide a good starting point
-> for someone looking to extend Zustand's feature set.
+:::warning
+免责声明：这些库可能存在错误、有限的维护或其他限制，并且未经 pmndrs 或 Zustand 维护者正式推荐。此列表旨在为希望扩展 Zustand 功能集的人提供一个良好的起点。
+:::
 
 - [@colorfy-software/zfy](https://colorfy-software.gitbook.io/zfy/) — 🧸 Useful helpers for state management in React with Zustand.
 - [@davstack/store](https://www.npmjs.com/package/@davstack/store) — A zustand store factory that auto generates selectors with get/set/use methods, supports inferred types, and makes global / local state management easy.
