@@ -1,11 +1,11 @@
 ---
-title: TypeScript Guide
+title: TypeScript 指南
 nav: 7
 ---
 
-## Basic usage
+## 基本用法
 
-The difference when using TypeScript is that instead of writing `create(...)`, you have to write `create<T>()(...)` (notice the extra parentheses `()` too along with the type parameter) where `T` is the type of the state to annotate it. For example:
+使用 TypeScript 时的区别在于，您必须编写 `create<T>()(...)` （请注意额外的括号 `()` 以及类型参数），而不是编写 `create(...)`，其中 `T` 是对其进行注释的状态类型。例如：
 
 ```ts
 import { create } from 'zustand'
@@ -22,13 +22,13 @@ const useBearStore = create<BearState>()((set) => ({
 ```
 
 <details>
-  <summary>Why can't we simply infer the type from the initial state?</summary>
+  <summary>为什么我们不能简单地从初始状态推断类型？</summary>
 
   <br/>
 
-**TLDR**: Because state generic `T` is invariant.
+**TLDR**: 因为状态通用 `T` 是不变的.
 
-Consider this minimal version `create`:
+考虑这个最小版本 `create`:
 
 ```ts
 declare const create: <T>(f: (get: () => T) => T) => T
@@ -37,38 +37,38 @@ const x = create((get) => ({
   foo: 0,
   bar: () => get(),
 }))
-// `x` is inferred as `unknown` instead of
+// `x` 被推断为 `unknown` 而不是
 // interface X {
 //   foo: number,
 //   bar: () => X
 // }
 ```
 
-Here, if you look at the type of `f` in `create`, i.e. `(get: () => T) => T`, it "gives" `T` via return (making it covariant), but it also "takes" `T` via `get` (making it contravariant). "So where does `T` come from?" TypeScript wonders. It's like that chicken or egg problem. At the end TypeScript, gives up and infers `T` as `unknown`.
+在这里，如果您查看 `create` 中 `f` 的类型，即 `(get: () => T) => T`，它通过 return“给出”`T`（使其协变），但它也通过 `get` (使其逆变）。 “那么`T`从哪里来呢？” TypeScript 创造奇迹。这就像先有鸡还是先有蛋的问题。最后，TypeScript 放弃并推断 `T`为`unknown`。
 
-So, as long as the generic to be inferred is invariant (i.e. both covariant and contravariant), TypeScript will be unable to infer it. Another simple example would be this:
+因此，只要要推断的泛型是不变的（即协变和逆变），TypeScript 将无法推断它。另一个简单的例子是这样的：
 
 ```ts
 const createFoo = {} as <T>(f: (t: T) => T) => T
 const x = createFoo((_) => 'hello')
 ```
 
-Here again, `x` is `unknown` instead of `string`.
+这里，x 是`unknown`，而不是`string`。
 
   <details>
-    <summary>More about the inference (just for the people curious and interested in TypeScript)</summary>
+    <summary>更多关于推理的内容（仅供对 TypeScript 好奇和感兴趣的人使用）</summary>
 
-In some sense this inference failure is not a problem because a value of type `<T>(f: (t: T) => T) => T` cannot be written. That is to say you can't write the real runtime implementation of `createFoo`. Let's try it:
+从某种意义上说，这种推理失败不是问题，因为无法写入 `<T>(f: (t: T) => T) => T` 类型的值。也就是说你无法编写`createFoo`的真正运行时实现。我们来尝试一下：
 
 ```js
 const createFoo = (f) => f(/* ? */)
 ```
 
-`createFoo` needs to return the return value of `f`. And to do that we first have to call `f`. And to call it we have to pass a value of type `T`. And to pass a value of type `T` we first have to produce it. But how can we produce a value of type `T` when we don't even know what `T` is? The only way to produce a value of type `T` is to call `f`, but then to call `f` itself we need a value of type `T`. So you see it's impossible to actually write `createFoo`.
+`createFoo`需要返回`f`的返回值。为此，我们首先必须调用 `f`。要调用它，我们必须传递 `T` 类型的值。要传递 `T` 类型的值，我们首先必须生成它。但是，当我们甚至不知道 `T` 是什么时，如何生成 `T`类型的值呢？生成 `T` 类型值的唯一方法是调用 `f`，但是要调用 `f` 本身，我们需要一个 `T` 类型值。所以您会发现实际上不可能编写 `createFoo`。
 
-So what we're saying is, the inference failure in case of `createFoo` is not really a problem because it's impossible to implement `createFoo`. But what about the inference failure in case of `create`? That also is not really a problem because it's impossible to implement `create` too. Wait a minute, if it's impossible to implement `create` then how does Zustand implement it? The answer is, it doesn't.
+所以我们要说的是，`createFoo` 情况下的推理失败并不是真正的问题，因为不可能实现 `createFoo`。但是`create`时推理失败怎么办？这也不是真正的问题，因为它也不可能实现`create`。等一下，如果`create`无法实现，那么Zustand如何实现呢？答案是，没有。
 
-Zustand lies that it implemented `create`'s type, it implemented only the most part of it. Here's a simple proof by showing unsoundness. Consider the following code:
+Zustand谎称它实现了`create`的类型，但它只实现了其中的大部分。这是通过显示不合理性来进行的简单证明。考虑以下代码：
 
 ```ts
 import { create } from 'zustand'
@@ -78,24 +78,24 @@ const useBoundStore = create<{ foo: number }>()((_, get) => ({
 }))
 ```
 
-This code compiles. But if we run it, we'll get an exception: "Uncaught TypeError: Cannot read properties of undefined (reading 'foo')". This is because `get` would return `undefined` before the initial state is created (hence you shouldn't call `get` when creating the initial state). The types promise that `get` will never return `undefined` but it does initially, which means Zustand failed to implement it.
+这段代码可以编译。但是如果我们运行它，我们会得到一个异常：“Uncaught TypeError：无法读取未定义的属性（读取'foo'）”。这是因为 `get` 在创建初始状态之前会返回 `undefined` （因此在创建初始状态时不应该调用 `get` ）。类型承诺 `get` 永远不会返回 `undefined`，但它最初确实返回，这意味着 Zustand 未能实现它。
 
-And of course Zustand failed because it's impossible to implement `create` the way types promise (in the same way it's impossible to implement `createFoo`). In other words we don't have a type to express the actual `create` we have implemented. We can't type `get` as `() => T | undefined` because it would cause inconvenience and it still won't be correct as `get` is indeed `() => T` eventually, just if called synchronously it would be `() => undefined`. What we need is some kind of TypeScript feature that allows us to type `get` as `(() => T) & WhenSync<() => undefined>`, which of course is extremely far-fetched.
+当然，Zustand 失败了，因为它不可能实现类型承诺的`create`方式（就像不可能实现 `createFoo` 一样）。换句话说，我们没有一个类型来表达我们已经实现的实际`create`。我们不能输入 `get` as `() => T | undefined` 因为它会造成不便，而且它仍然不正确，因为 `get` 最终确实是 `() => T`，只是如果同步调用它就会是 `() => undefined`。我们需要的是某种 TypeScript 功能，允许我们输入 `get` as `(() => T) & WhenSync<() => undefined>`，这当然是极其牵强的。
 
-So we have two problems: lack of inference and unsoundness. Lack of inference can be solved if TypeScript can improve its inference for invariants. And unsoundness can be solved if TypeScript introduces something like `WhenSync`. To work around lack of inference we manually annotate the state type. And we can't work around unsoundness, but it's not a big deal because it's not much, calling `get` synchronously anyway doesn't make sense.
+所以我们有两个问题：缺乏推理和不合理。如果 TypeScript 可以改进其对不变量的推理，则可以解决推理不足的问题。如果 TypeScript 引入像 `WhenSync` 这样的东西，就可以解决不健全的问题。为了解决缺乏推理的问题，我们手动注释状态类型。我们无法解决不健全的问题，但这也不是什么大问题，因为它不多，无论如何同步调用 `get` 没有意义。
 
 </details>
 
 </details>
 
 <details>
-  <summary>Why the currying `()(...)`?</summary>
+  <summary>为什么要柯里化 ()(...)</summary>
 
   <br/>
 
-**TLDR**: It is a workaround for [microsoft/TypeScript#10571](https://github.com/microsoft/TypeScript/issues/10571).
+**TLDR**: 这是[microsoft/TypeScript#10571](https://github.com/microsoft/TypeScript/issues/10571)解决方法.
 
-Imagine you have a scenario like this:
+想象一下你有这样的场景：
 
 ```ts
 declare const withError: <T, E>(
@@ -108,7 +108,7 @@ const main = async () => {
 }
 ```
 
-Here, `T` is inferred to be a `string` and `E` is inferred to be `unknown`. You might want to annotate `E` as `Foo`, because you are certain of the shape of error `doSomething()` would throw. However, you can't do that. You can either pass all generics or none. Along with annotating `E` as `Foo`, you will also have to annotate `T` as `string` even though it gets inferred anyway. The solution is to make a curried version of `withError` that does nothing at runtime. Its purpose is to just allow you annotate `E`.
+这里，`T` 被推断为`string`，`E` 被推断为`unknown`。您可能希望将 `E` 注释为 `Foo`，因为您确定 `doSomething()` 会抛出的错误的形状。但是，您不能这样做。您可以传递所有泛型，也可以不传递任何泛型。除了将 `E` 注释为 `Foo` 之外，您还必须将 `T` 注释为`string`，即使它无论如何都会被推断出来。解决方案是制作一个在运行时不执行任何操作的 `withError` 的柯里化版本。它的目的只是让您注释 `E`。
 
 ```ts
 declare const withError: {
@@ -129,11 +129,11 @@ const main = async () => {
 }
 ```
 
-This way, `T` gets inferred and you get to annotate `E`. Zustand has the same use case when we want to annotate the state (the first type parameter) but allow other parameters to get inferred.
+这样，`T` 就会被推断出来，并且您可以注释 `E`。当我们想要注释状态（第一个类型参数）但允许推断其他参数时，Zustand 具有相同的用例。
 
 </details>
 
-Alternatively, you can also use `combine`, which infers the state so that you do not need to type it.
+或者，您也可以使用`combine`，它会推断状态，这样您就不需要键入它。
 
 ```ts
 import { create } from 'zustand'
@@ -147,21 +147,21 @@ const useBearStore = create(
 ```
 
 <details>
-  <summary>Be a little careful</summary>
+  <summary>小心一点</summary>
 
   <br/>
 
-We achieve the inference by lying a little in the types of `set`, `get`, and `store` that you receive as parameters. The lie is that they're typed as if the state is the first parameter, when in fact the state is the shallow-merge (`{ ...a, ...b }`) of both first parameter and the second parameter's return. For example, `get` from the second parameter has type `() => { bears: number }` and that is a lie as it should be `() => { bears: number, increase: (by: number) => void }`. And `useBearStore` still has the correct type; for example, `useBearStore.getState` is typed as `() => { bears: number, increase: (by: number) => void }`.
+我们通过稍微了解一下您收到的作为参数的 `set`、`get` 和 `store` 的类型来实现推断。谎言是，它们的类型就好像状态是第一个参数，而实际上状态是第一个参数和第二个参数的返回值的浅层合并 (`{ ...a, ...b }`)。例如，从第二个参数`get`的类型为 `() => { bears: number }` ，这是一个谎言，因为它应该是 `() => { bears: number,increase: (by: number) => void }`。并且 `useBearStore` 仍然具有正确的类型；例如，`useBearStore.getState` 的类型为 `() => { bears: number,increase: (by: number) => void }`。
 
-It isn't really a lie because `{ bears: number }` is still a subtype of `{ bears: number, increase: (by: number) => void }`. Therefore, there will be no problem in most cases. You should just be careful while using replace. For example, `set({ bears: 0 }, true)` would compile but will be unsound as it will delete the `increase` function. Another instance where you should be careful is if you use `Object.keys`. `Object.keys(get())` will return `["bears", "increase"]` and not `["bears"]`. The return type of `get` can make you fall for these mistakes.
+这并不是真正的谎言，因为 `{ bears: number }` 仍然是 `{ bears: number,increase: (by: number) => void }` 的子类型。因此，大多数情况下是不会有问题的。使用替换时你应该小心。例如， `set({ bears: 0 }, true)` 可以编译，但不健全，因为它会删除`increase`函数。另一个需要小心的例子是使用 `Object.keys`。 `Object.keys(get())` 将返回 `["bears", "increase"]` 而不是 `["bears"]`。 `get` 的返回类型可能会让您陷入这些错误。
 
-`combine` trades off a little type-safety for the convenience of not having to write a type for state. Hence, you should use `combine` accordingly. It is fine in most cases and you can use it conveniently.
+`combine` 牺牲了一点类型安全性，以方便不必为状态编写类型。因此，您应该相应地使用`combine`。大多数情况下都可以，使用起来也很方便。
 
 </details>
 
-Note that we don't use the curried version when using `combine` because `combine` "creates" the state. When using a middleware that creates the state, it isn't necessary to use the curried version because the state now can be inferred. Another middleware that creates state is `redux`. So when using `combine`, `redux`, or any other custom middleware that creates the state, we don't recommend using the curried version.
+请注意，在使用`combine`时我们不使用柯里化版本，因为`combine`“创建”状态。当使用创建状态的中间件时，没有必要使用柯里化版本，因为现在可以推断状态。另一个创建状态的中间件是 `redux`。因此，当使用`combine`、`redux`或任何其他创建状态的自定义中间件时，我们不建议使用柯里化版本。
 
-If you want to infer state type also outside of state declaration, you can use the `ExtractState` type helper:
+如果您想在状态声明之外推断状态类型，您可以使用 `ExtractState` 类型帮助器：
 
 ```ts
 import { create, ExtractState } from 'zustand'
@@ -176,9 +176,9 @@ const useBearStore = create(
 )
 ```
 
-## Using middlewares
+## 使用 middlewares
 
-You do not have to do anything special to use middlewares in TypeScript.
+您无需执行任何特殊操作即可在 TypeScript 中使用中间件。
 
 ```ts
 import { create } from 'zustand'
@@ -202,7 +202,7 @@ const useBearStore = create<BearState>()(
 )
 ```
 
-Just make sure you are using them immediately inside `create` so as to make the contextual inference work. Doing something even remotely fancy like the following `myMiddlewares` would require more advanced types.
+只需确保您在 `create` 中立即使用它们，以便使上下文推理发挥作用。做一些甚至有点奇特的事情，比如下面的 `myMiddlewares` ，都需要更高级的类型。
 
 ```ts
 import { create } from 'zustand'
@@ -223,11 +223,11 @@ const useBearStore = create<BearState>()(
 )
 ```
 
-Also, we recommend using `devtools` middleware as last as possible. For example, when you use it with `immer` as a middleware, it should be `devtools(immer(...))` and not `immer(devtools(...))`. This is because`devtools` mutates the `setState` and adds a type parameter on it, which could get lost if other middlewares (like `immer`) also mutate `setState` before `devtools`. Hence using `devtools` at the end makes sure that no middlewares mutate `setState` before it.
+另外，我们建议尽可能最后使用 `devtools` 中间件。例如，当您将它与 `immer` 作为中间件一起使用时，它应该是 `devtools(immer(...))` 而不是 `immer(devtools(...))`。这是因为 `devtools` 改变了 `setState` 并在其上添加了一个类型参数，如果其他中间件（如 `immer`）也在 `devtools` 之前改变了 `setState`，则该类型参数可能会丢失。因此，最后使用 `devtools` 可确保没有中间件在其之前改变 `setState`。
 
-## Authoring middlewares and advanced usage
+## 编写中间件和高级用法
 
-Imagine you had to write this hypothetical middleware.
+想象一下您必须编写这个假设的中间件。
 
 ```ts
 import { create } from 'zustand'
@@ -241,9 +241,9 @@ const useBearStore = create(foo(() => ({ bears: 0 }), 'hello'))
 console.log(useBearStore.foo.toUpperCase())
 ```
 
-Zustand middlewares can mutate the store. But how could we possibly encode the mutation on the type-level? That is to say how could we type `foo` so that this code compiles?
+Zustand 中间件可以改变存储。但是我们如何才能在类型级别上对突变进行编码呢？也就是说，我们如何输入 `foo` 才能使该代码编译？
 
-For a usual statically typed language, this is impossible. But thanks to TypeScript, Zustand has something called a "higher-kinded mutator" that makes this possible. If you are dealing with complex type problems, like typing a middleware or using the `StateCreator` type, you will have to understand this implementation detail. For this, you can [check out #710](https://github.com/pmndrs/zustand/issues/710).
+对于通常的静态类型语言来说，这是不可能的。但多亏了 TypeScript，Zustand 拥有一种称为“更高种类的变异器”的东西，使这成为可能。如果您正在处理复杂的类型问题，例如键入中间件或使用 `StateCreator` 类型，您将必须了解此实现细节。为此，您可以[查看 #710](https://github.com/pmndrs/zustand/issues/710)。
 
 If you are eager to know what the answer is to this particular problem then you can [see it here](#middleware-that-changes-the-store-type).
 

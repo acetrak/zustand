@@ -3,9 +3,9 @@ title: 不可变状态和合并
 nav: 3
 ---
 
-Like with React's `useState`, we need to update state immutably.
+与 React 的 `useState` 一样，我们需要不可变地更新状态。
 
-Here's a typical example:
+这是一个典型的例子：
 
 ```jsx
 import { create } from 'zustand'
@@ -16,24 +16,22 @@ const useCountStore = create((set) => ({
 }))
 ```
 
-The `set` function is to update state in the store.
-Because the state is immutable, it should have been like this:
+
+`set` 的功能是更新 store 中的状态。因为状态是不可变的，所以它应该是这样的：
 
 ```js
 set((state) => ({ ...state, count: state.count + 1 }))
 ```
 
-However, as this is a common pattern, `set` actually merges state, and
-we can skip the `...state` part:
+然而，由于这是一种常见的模式，`set` 实际上合并了状态，我们可以跳过 `...state` 部分：
 
 ```js
 set((state) => ({ count: state.count + 1 }))
 ```
 
-## Nested objects
+## 嵌套对象
 
-The `set` function merges state at only one level.
-If you have a nested object, you need to merge them explicitly. You will use the spread operator pattern like so:
+`set` 函数仅合并一层状态。如果您有嵌套对象，则需要显式合并它们。您将像这样使用扩展运算符模式：
 
 ```jsx
 import { create } from 'zustand'
@@ -47,12 +45,11 @@ const useCountStore = create((set) => ({
 }))
 ```
 
-For complex use cases, consider using some libraries that help with immutable updates.
-You can refer to [Updating nested state object values](./updating-state.md#deeply-nested-object).
+对于复杂的用例，请考虑使用一些有助于进行不可变更新的库。您可以参考[更新嵌套状态对象值](./updating-state.md#deeply-nested-object)。
 
-## Replace flag
+## 更换标志
 
-To disable the merging behavior, you can specify a `replace` boolean value for `set` like so:
+要禁用合并行为，您可以为 `set` 指定一个`replace`布尔值，如下所示：
 
 ```js
 set((state) => newState, true)

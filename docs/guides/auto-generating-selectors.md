@@ -1,17 +1,17 @@
 ---
-title: Auto Generating Selectors
+title: 自动生成选择器
 nav: 5
 ---
 
-We recommend using selectors when using either the properties or actions from the store. You can access values from the store like so:
+我们建议在使用商店中的属性或操作时使用选择器。您可以像这样从商店访问值：
 
 ```typescript
 const bears = useBearStore((state) => state.bears)
 ```
 
-However, writing these could be tedious. If that is the case for you, you can auto-generate your selectors.
+然而，写这些可能会很乏味。如果您是这种情况，您可以自动生成选择器。
 
-## Create the following function: `createSelectors`
+## 创建以下函数：`createSelectors`
 
 ```typescript
 import { StoreApi, UseBoundStore } from 'zustand'
@@ -33,7 +33,7 @@ const createSelectors = <S extends UseBoundStore<StoreApi<object>>>(
 }
 ```
 
-If you have a store like this:
+如果你有一家这样的store ：
 
 ```typescript
 interface BearState {
@@ -49,13 +49,13 @@ const useBearStoreBase = create<BearState>()((set) => ({
 }))
 ```
 
-Apply that function to your store:
+将该函数应用到您的store:
 
 ```typescript
 const useBearStore = createSelectors(useBearStoreBase)
 ```
 
-Now the selectors are auto generated and you can access them directly:
+现在选择器是自动生成的，您可以直接访问它们：
 
 ```typescript
 // get the property
@@ -67,7 +67,7 @@ const increment = useBearStore.use.increment()
 
 ## Vanilla Store
 
-If you are using a vanilla store, use the following `createSelectors` function:
+如果您使用的是vanilla store，请使用以下 `createSelectors` 函数：
 
 ```typescript
 import { StoreApi, useStore } from 'zustand'
@@ -88,7 +88,7 @@ const createSelectors = <S extends StoreApi<object>>(_store: S) => {
 }
 ```
 
-The usage is the same as a React store. If you have a store like this:
+用法与 React store 相同。如果你有一家这样的store：
 
 ```typescript
 import { createStore } from 'zustand'
@@ -106,13 +106,13 @@ const store = createStore<BearState>((set) => ({
 }))
 ```
 
-Apply that function to your store:
+将该函数应用到您的 store:
 
 ```typescript
 const useBearStore = createSelectors(store)
 ```
 
-Now the selectors are auto generated and you can access them directly:
+现在选择器是自动生成的，您可以直接访问它们：
 
 ```typescript
 // get the property
@@ -124,9 +124,10 @@ const increment = useBearStore.use.increment()
 
 ## Live Demo
 
-For a working example of this, see the [Code Sandbox](https://codesandbox.io/s/zustand-auto-generate-selectors-forked-rl8v5e?file=/src/selectors.ts).
 
-## Third-party Libraries
+有关此操作的示例，请参阅[Code Sandbox](https://codesandbox.io/s/zustand-auto-generate-selectors-forked-rl8v5e?file=/src/selectors.ts)。
+
+## 第三方库
 
 - [auto-zustand-selectors-hook](https://github.com/Albert-Gao/auto-zustand-selectors-hook)
 - [react-hooks-global-state](https://github.com/dai-shi/react-hooks-global-state)

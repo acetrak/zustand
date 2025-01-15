@@ -46,6 +46,8 @@ font-size: 1.2rem;
 
 }
 
-p{
-  margin-bottom: 0;
+
+
+html{
+  scroll-behavior: smooth;
 }

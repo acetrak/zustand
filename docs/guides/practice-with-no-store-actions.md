@@ -1,11 +1,11 @@
 ---
-title: Practice with no store actions
+title: 无store actons的练习
 nav: 6
 ---
 
-The recommended usage is to colocate actions and states within the store (let your actions be located together with your state).
+建议的用法是在商店内并置操作和状态（让您的操作与状态一起定位）
 
-For example:
+例如：
 
 ```js
 export const useBoundStore = create((set) => ({
@@ -16,11 +16,11 @@ export const useBoundStore = create((set) => ({
 }))
 ```
 
-This creates a self-contained store with data and actions together.
+这将创建一个包含数据和操作的独立存储。
 
 ---
 
-An alternative approach is to define actions at module level, external to the store.
+另一种方法是在商店外部的模块级别定义操作。
 
 ```js
 export const useBoundStore = create(() => ({
@@ -34,9 +34,9 @@ export const inc = () =>
 export const setText = (text) => useBoundStore.setState({ text })
 ```
 
-This has a few advantages:
+这有几个优点：
 
-- It doesn't require a hook to call an action;
-- It facilitates code splitting.
+- 它不需要hook来调用操作
+- 它有利于代码分割。
 
-While this pattern doesn't offer any downsides, some may prefer colocating due to its encapsulated nature.
+虽然这种模式没有任何缺点，但由于其封装性质，有些人可能更喜欢并置。
