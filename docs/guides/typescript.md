@@ -245,7 +245,8 @@ Zustand 中间件可以改变存储。但是我们如何才能在类型级别上
 
 对于通常的静态类型语言来说，这是不可能的。但多亏了 TypeScript，Zustand 拥有一种称为“更高种类的变异器”的东西，使这成为可能。如果您正在处理复杂的类型问题，例如键入中间件或使用 `StateCreator` 类型，您将必须了解此实现细节。为此，您可以[查看 #710](https://github.com/pmndrs/zustand/issues/710)。
 
-If you are eager to know what the answer is to this particular problem then you can [see it here](#middleware-that-changes-the-store-type).
+
+如果您渴望知道这个特定问题的答案是什么，那么您可以在[这里](#middleware-that-changes-the-store-type)看到它。
 
 ### Handling Dynamic `replace` Flag
 
