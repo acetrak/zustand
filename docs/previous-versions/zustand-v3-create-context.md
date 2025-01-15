@@ -1,12 +1,13 @@
 ---
-title: createContext from zustand_context
+title: 从 zustand/context 创建上下文
 nav: 21
 ---
 
-A special `createContext` is provided since v3.5,
-which avoids misusing the store hook.
+从 v3.5 开始提供了一个特殊的 `createContext`，它可以避免误用 store hook。
 
-> **Note**: This function is deprecated in v4 and will be removed in v5. See [Migration](#migration).
+:::warning
+注意：此函数在 v4 中已弃用，并将在 v5 中删除。请参阅[Migration](#migration)。
+:::
 
 ```jsx
 import create from 'zustand'
@@ -28,13 +29,13 @@ const Component = () => {
   ...
 ```
 
-## createContext usage in real components
+## createContext在实际组件中的使用
 
 ```jsx
 import create from "zustand";
 import createContext from "zustand/context";
 
-// Best practice: You can move the below createContext() and createStore to a separate file(store.js) and import the Provider, useStore here/wherever you need.
+// 最佳实践：您可以将下面的 createContext() 和 createStore 移动到单独的文件（store.js）并导入 Provider，在此处/任何您需要的地方使用Store。
 
 const { Provider, useStore } = createContext();
 
@@ -47,7 +48,7 @@ const createStore = () =>
 
 const Button = () => {
   return (
-      {/** store() - This will create a store for each time using the Button component instead of using one store for all components **/}
+      {/** store() - 这将为每次使用 Button 组件创建一个存储，而不是为所有组件使用一个存储 **/}
     <Provider createStore={createStore}>
       <ButtonChild />
     </Provider>
@@ -80,7 +81,7 @@ export default function App() {
 }
 ```
 
-## createContext usage with initialization from props
+## createContext使用props进行初始化
 
 ```tsx
 import create from 'zustand'
@@ -106,9 +107,9 @@ export default function App({ initialBears }) {
 
 ## Migration
 
-Discussion: [https://github.com/pmndrs/zustand/discussions/1276](https://github.com/pmndrs/zustand/discussions/1276)
+讨论: [https://github.com/pmndrs/zustand/discussions/1276](https://github.com/pmndrs/zustand/discussions/1276)
 
-Here's the new context usage with v4 API.
+以下是 v4 API 的新上下文用法。
 
 ```jsx
 import { createContext, useContext, useRef } from 'react'
@@ -139,7 +140,7 @@ const useStoreInContext = (selector) => {
 }
 ```
 
-Or reach out to some third-party libraries that provide Zustand v3-like APIs:
+或者联系一些提供类似 Zustand v3 API 的第三方库：
 
 - [https://github.com/charkour/zustand-di](https://github.com/charkour/zustand-di)
 - [https://github.com/arvinxx/zustand-utils](https://github.com/arvinxx/zustand-utils)

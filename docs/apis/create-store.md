@@ -1,54 +1,40 @@
 ---
 title: createStore
-description: How to create vanilla stores
+description: 如何创建vanilla stores
 nav: 24
 ---
 
-`createStore` lets you create a vanilla store that exposes API utilities.
+`createStore` 允许您创建一个公开的vanilla store API 实用程序。
 
 ```js
 const someStore = createStore(stateCreatorFn)
 ```
 
-- [Types](#types)
-  - [Signature](#createstore-signature)
-- [Reference](#reference)
-- [Usage](#usage)
-  - [Updating state based on previous state](#updating-state-based-on-previous-state)
-  - [Updating Primitives in State](#updating-primitives-in-state)
-  - [Updating Objects in State](#updating-objects-in-state)
-  - [Updating Arrays in State](#updating-arrays-in-state)
-  - [Subscribing to state updates](#subscribing-to-state-updates)
-- [Troubleshooting](#troubleshooting)
-  - [I’ve updated the state, but the screen doesn’t update](#ive-updated-the-state-but-the-screen-doesnt-update)
+## 类型
 
-## Types
-
-### Signature
+### 签名
 
 ```ts
 createStore<T>()(stateCreatorFn: StateCreator<T, [], []>): StoreApi<T>
 ```
 
-## Reference
+## 语法
 
 ### `createStore(stateCreatorFn)`
 
-#### Parameters
+#### 参数
 
-- `stateCreatorFn`: A function that takes `set` function, `get` function and `store` as arguments.
-  Usually, you will return an object with the methods you want to expose.
+- `stateCreatorFn`：一个以 `set` 函数、`get` 函数和 `store` 作为参数的函数。通常，您将返回一个带有您想要公开的方法的对象。
 
-#### Returns
+#### 返回
 
-`createStore` returns a vanilla store that exposes API utilities, `setState`, `getState`,
-`getInitialState` and `subscribe`.
+`createStore` 返回一个公开 API 实用程序、`setState`、`getState`、`getInitialState` 和 `subscribe` 的普通存储。
 
-## Usage
+## 使用
 
-### Updating state based on previous state
+### 根据之前的状态更新状态
 
-This example shows how you can support **updater functions** within **actions**.
+此示例展示了如何在操作中支持更新程序功能。
 
 ```tsx
 import { createStore } from 'zustand/vanilla'
@@ -106,7 +92,7 @@ render(ageStore.getInitialState(), ageStore.getInitialState())
 ageStore.subscribe(render)
 ```
 
-Here's the `html` code
+这是`html`代码
 
 ```html
 <h1 id="your-age"></h1>
@@ -114,15 +100,13 @@ Here's the `html` code
 <button id="increment-by-1" type="button">+1</button>
 ```
 
-### Updating Primitives in State
+### 更新状态中的原始值
 
-State can hold any kind of JavaScript value. When you want to update built-in primitive values like
-numbers, strings, booleans, etc. you should directly assign new values to ensure updates are applied
-correctly, and avoid unexpected behaviors.
+状态可以保存任何类型的 JavaScript 值。当您想要更新数字、字符串、布尔值等内置原始值时，您应该直接分配新值以确保正确应用更新，并避免意外行为。
 
-> [!NOTE]
-> By default, `set` function performs a shallow merge. If you need to completely replace
-> the state with a new one, use the `replace` parameter set to `true`
+:::tip
+默认情况下，`set` 函数执行浅合并。如果需要将状态完全替换为新状态，请使用设置为`true`的`replace`参数
+:::
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -147,7 +131,7 @@ render(xStore.getInitialState(), xStore.getInitialState())
 xStore.subscribe(render)
 ```
 
-Here's the `html` code
+这是`html`代码
 
 ```html
 <div
@@ -161,16 +145,11 @@ Here's the `html` code
 </div>
 ```
 
-### Updating Objects in State
+### 更新状态中的对象
 
-Objects are **mutable** in JavaScript, but you should treat them as **immutable** when you store
-them in state. Instead, when you want to update an object, you need to create a new one (or make a
-copy of an existing one), and then set the state to use the new object.
+对象在 JavaScript 中是可变的，但是当您将它们存储在状态中时，应该将它们视为不可变。相反，当您想要更新对象时，您需要创建一个新对象（或复制现有对象），然后设置状态以使用新对象。
 
-By default, `set` function performs a shallow merge. For most updates where you only need to modify
-specific properties, the default shallow merge is preferred as it's more efficient. To completely
-replace the state with a new one, use the `replace` parameter set to `true` with caution, as it
-discards any existing nested data within the state.
+默认情况下，`set` 函数执行浅合并。对于大多数只需要修改特定属性的更新，默认的浅合并是首选，因为它更有效。要将状态完全替换为新状态，请谨慎使用设置为 `true` 的`replace`参数，因为它会丢弃状态中任何现有的嵌套数据。
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -207,7 +186,7 @@ render(positionStore.getInitialState(), positionStore.getInitialState())
 positionStore.subscribe(render)
 ```
 
-Here's the `html` code
+这是`html`代码
 
 ```html
 <div
@@ -221,21 +200,15 @@ Here's the `html` code
 </div>
 ```
 
-### Updating Arrays in State
+### 更新状态中的数组
 
-Arrays are mutable in JavaScript, but you should treat them as immutable when you store them in
-state. Just like with objects, when you want to update an array stored in state, you need to create
-a new one (or make a copy of an existing one), and then set state to use the new array.
+数组在 JavaScript 中是可变的，但是当您将它们存储在状态中时，应该将它们视为不可变。就像对象一样，当您想要更新存储在状态中的数组时，您需要创建一个新数组（或复制现有数组），然后设置状态以使用新数组。
 
-By default, `set` function performs a shallow merge. To update array values we should assign new
-values to ensure updates are applied correctly, and avoid unexpected behaviors. To completely
-replace the state with a new one, use the `replace` parameter set to `true`.
+默认情况下，`set` 函数执行浅合并。要更新数组值，我们应该分配新值以确保正确应用更新，并避免意外行为。要将状态完全替换为新状态，请使用设置为 `true` 的`replace` 参数。
 
-> [!IMPORTANT]
-> We should prefer immutable operations like: `[...array]`, `concat(...)`, `filter(...)`,
-> `slice(...)`, `map(...)`, `toSpliced(...)`, `toSorted(...)`, and `toReversed(...)`, and avoid
-> mutable operations like `array[arrayIndex] = ...`, `push(...)`, `unshift(...)`, `pop(...)`,
-> `shift(...)`, `splice(...)`, `reverse(...)`, and `sort(...)`.
+:::tip
+我们应该更喜欢不可变的操作，例如：`[...array]`、`concat(...)`、`filter(...)`、`slice(...)`、`map(...)`、`toSpliced(...)`、`toSorted (...)` 和 `toReversed(...)`，并避免可变操作，如 `array[arrayIndex] = ...`、`push(...)`、`unshift(...)`、`pop(...)`、`shift (...)`、`splice(...)`、`reverse(...)` 和`sort(...)`。
+:::
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -260,7 +233,7 @@ render(positionStore.getInitialState(), positionStore.getInitialState())
 positionStore.subscribe(render)
 ```
 
-Here's the `html` code
+这是`html`代码
 
 ```html
 <div
@@ -274,10 +247,9 @@ Here's the `html` code
 </div>
 ```
 
-### Subscribing to state updates
+### 订阅状态更新
 
-By subscribing to state updates, you register a callback that fires whenever the store's state
-updates. We can use `subscribe` for external state management.
+通过订阅状态更新，您可以注册一个回调，每当商店的状态更新时就会触发该回调。我们可以使用 `subscribe` 进行外部状态管理。.
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -323,7 +295,7 @@ const logger: Parameters<typeof positionStore.subscribe>[0] = (state) => {
 positionStore.subscribe(logger)
 ```
 
-Here's the `html` code
+这是`html`代码
 
 ```html
 <div
@@ -337,16 +309,13 @@ Here's the `html` code
 </div>
 ```
 
-## Troubleshooting
+## 故障排除
 
-### I’ve updated the state, but the screen doesn’t update
+### 我已更新状态，但屏幕未更新
 
-In the previous example, the `position` object is always created fresh from the current cursor
-position. But often, you will want to include existing data as a part of the new object you’re
-creating. For example, you may want to update only one field in a form, but keep the previous
-values for all other fields.
+在前面的示例中，`position`对象始终是从当前光标位置重新创建的。但通常，您会希望将现有数据作为您正在创建的新对象的一部分包含在内。例如，您可能只想更新表单中的一个字段，但保留所有其他字段的先前值。
 
-These input fields don’t work because the `oninput` handlers mutate the state:
+这些输入字段不起作用，因为 `oninput` 处理程序会改变状态：
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -406,7 +375,7 @@ render(personStore.getInitialState(), personStore.getInitialState())
 personStore.subscribe(render)
 ```
 
-Here's the `html` code
+这是`html`代码
 
 ```html
 <label style="display: block">
@@ -424,15 +393,13 @@ Here's the `html` code
 <p id="result"></p>
 ```
 
-For example, this line mutates the state from a past render:
+例如，这一行改变了过去渲染的状态：
 
 ```ts
 personStore.getState().firstName = (e.target as any).value
 ```
 
-The reliable way to get the behavior you’re looking for is to create a new object and pass it to
-`setPerson`. But here you want to also copy the existing data into it because only one of the
-fields has changed:
+获得您正在寻找的行为的可靠方法是创建一个新对象并将其传递给 `setPerson`。但在这里您还想将现有数据复制到其中，因为只有一个字段发生了更改：
 
 ```ts
 personStore.getState().setPerson({
@@ -440,14 +407,13 @@ personStore.getState().setPerson({
 })
 ```
 
-> [!NOTE]
-> We don’t need to copy every property separately due to `set` function performing shallow merge by
-> default.
+:::tip
+由于 `set` 函数默认执行浅层合并，因此我们不需要单独复制每个属性。
+:::
 
-Now the form works!
+现在表单可以工作了！
 
-Notice how you didn’t declare a separate state variable for each input field. For large forms,
-keeping all data grouped in an object is very convenient—as long as you update it correctly!
+请注意，您没有为每个输入字段声明单独的状态变量。对于大型表单，将所有数据分组在一个对象中非常方便 - 只要正确更新即可！
 
 ```ts {32-34,38-40,44-46}
 import { createStore } from 'zustand/vanilla'

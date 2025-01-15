@@ -494,7 +494,7 @@ const bears = useStore(useBearStore, (state) => state.bears)
 
 ## FAQ
 
-### 如何检查我的商店是否已补水
+### 如何检查我的商店是否已水合
 
 有几种不同的方法可以做到这一点。
 
@@ -648,7 +648,7 @@ export const useBearStore = create<BearState>()(
 )
 ```
 
-### 储存时如何补充水分
+### 储存时如何重新水合
 
 您可以使用 Persist API 创建自己的实现，类似于下面的示例：
 
@@ -673,7 +673,7 @@ const useBoundStore = create(persist(...))
 withStorageDOMEvents(useBoundStore)
 ```
 
-### 如何将它与 TypeScript 一起使用
+### 如何将它与TypeScript一起使用
 
 基本的打字稿用法不需要​​任何特殊的东西，除了编写 `create<State>()(...)` 而不是 `create(...)` 。
 
@@ -701,7 +701,7 @@ export const useBearStore = create<MyState>()(
 )
 ```
 
-### 如何将其与 Map 和 Set 一起使用
+### 如何将其与Map和Set一起使用
 
 为了持久保存 `Map` 和 `Set` 等对象类型，需要将它们转换为 `JSON` 可序列化类型（例如 `Array`），这可以通过定义自定义`storage`引擎来完成。
 
