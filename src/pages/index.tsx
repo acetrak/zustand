@@ -6,13 +6,15 @@ import Head from "@docusaurus/Head";
 import styles from "./index.module.css";
 import CodeShow from "@site/src/components/code.md";
 import clsx from "clsx";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
   return (
     <>
+      {/* <SpeedInsights></SpeedInsights> */}
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="🐻 承担 React 中状态管理的必需品 zustand教程， 如果你习惯了 Redux 或喜欢 React 的自然不可变更新，但期望 更加轻量、便捷 的状态管理方案那么试试它吧~"></meta>
         <meta property="og:description" content="Zustand 中文文档" />
         <meta name="og:image" content="/bear.jpg"></meta>
@@ -39,7 +41,7 @@ export default function Home(): ReactNode {
           </header>
 
           <div className={styles.code}>
-            <div className={clsx(styles.codeContainer,'prism-code language-jsx thin-scrollbar')}>
+            <div className={clsx(styles.codeContainer, 'prism-code language-jsx thin-scrollbar')}>
               <CodeShow ></CodeShow>
             </div>
           </div>

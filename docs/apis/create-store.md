@@ -30,7 +30,7 @@ createStore<T>()(stateCreatorFn: StateCreator<T, [], []>): StoreApi<T>
 
 `createStore` 返回一个公开 API 实用程序、`setState`、`getState`、`getInitialState` 和 `subscribe` 的普通存储。
 
-## 使用
+## 用法
 
 ### 根据之前的状态更新状态
 

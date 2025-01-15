@@ -31,7 +31,7 @@ createWithEqualityFn<T>()(stateCreatorFn: StateCreator<T, [], []>, equalityFn?: 
 
 `createWithEqualityFn` 返回一个带有 API 实用程序的 React Hook，就像 `create` 一样。它允许您使用选择器函数返回基于当前状态的数据，并允许您使用相等函数跳过重新渲染。它应该采用选择器函数和相等函数作为参数
 
-## 使用
+## 用法
 
 ### 根据之前的状态更新状态
 
@@ -105,7 +105,7 @@ export default function App() {
 状态可以保存任何类型的 JavaScript 值。当您想要更新数字、字符串、布尔值等内置原始值时，您应该直接分配新值以确保正确应用更新，并避免意外行为。
 
 :::tip
-默认情况下，set 函数执行浅合并。如果需要将状态完全替换为新状态，请使用设置为true的replace参数
+默认情况下，`set` 函数执行浅合并。如果需要将状态完全替换为新状态，请使用设置为`true`的`replace`参数
 :::
 
 ```tsx

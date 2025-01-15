@@ -1,60 +1,45 @@
 ---
 title: shallow
-description: How compare simple data effectively
+description: 如何有效比较简单数据
 nav: 27
 ---
 
-`shallow` lets you run fast checks on simple data structures. It effectively identifies changes in
-**top-level** properties when you're working with data structures that don't have nested objects or
-arrays within them.
+`shallow`可让您对简单的数据结构进行快速检查。当您使用其中没有嵌套对象或数组的数据结构时，它可以有效地识别顶级属性的更改。
 
-> [!NOTE]
-> Shallow lets you perform quick comparisons, but keep its limitations in mind.
+:::tip
+浅层可让您执行快速比较，但请记住其局限性。
+:::
 
 ```js
 const equal = shallow(a, b)
 ```
 
-- [Types](#types)
-  - [Signature](#shallow-signature)
-- [Reference](#reference)
-- [Usage](#usage)
-  - [Comparing Primitives](#comparing-primitives)
-  - [Comparing Objects](#comparing-objects)
-  - [Comparing Sets](#comparing-sets)
-  - [Comparing Maps](#comparing-maps)
-- [Troubleshooting](#troubleshooting)
-  - [Comparing objects returns `false` even if they are identical.](#comparing-objects-returns-false-even-if-they-are-identical)
+## 类型
 
-## Types
-
-### Signature
+### 签名
 
 ```ts
 shallow<T>(a: T, b: T): boolean
 ```
 
-## Reference
+## 语法
 
 ### `shallow(a, b)`
 
-#### Parameters
+#### 参数
 
-- `a`: The first value.
-- `b`: The second value.
+- `a`: 第一个值.
+- `b`: 第二个值.
 
-#### Returns
+#### 返回
 
-`shallow` returns `true` when `a` and `b` are equal based on a shallow comparison of their
-**top-level** properties. Otherwise, it should return `false`.
+当 `a` 和 `b` 基于其**顶级**属性的浅比较相等时，`shallow` 返回 `true`。否则，它应该返回 `false`。
 
-## Usage
+## 用法
 
-### Comparing Primitives
+### 比较原始值
 
-When comparing primitive values like `string`s, `number`s, `boolean`s, and `BigInt`s, both
-`Object.is` and `shallow` function return `true` if the values are the same. This is because
-primitive values are compared by their actual value rather than by reference.
+当比较`string`、`number`、`boolean`和 `BigInt` 等原始值时，如果值相同，则 `Object.is` 和`shallow` 函数都返回 `true`。这是因为原始值是通过其实际值而不是通过引用进行比较的。
 
 ```ts
 const stringLeft = 'John Doe'
@@ -82,15 +67,11 @@ Object.is(bigIntLeft, bigIntRight) // -> true
 shallow(bigIntLeft, bigIntRight) // -> true
 ```
 
-### Comparing Objects
+### 比较对象
 
-When comparing objects, it's important to understand how `Object.is` and `shallow` function
-operate, as they handle comparisons differently.
+比较对象时，了解 `Object.is` 和`shallow`函数的操作方式非常重要，因为它们处理比较的方式不同。
 
-The `shallow` function returns `true` because shallow performs a shallow comparison of the objects.
-It checks if the top-level properties and their values are the same. In this case, the top-level
-properties (`firstName`, `lastName`, and `age`) and their values are identical between `objectLeft`
-and `objectRight`, so shallow considers them equal.
+由于`shallow` 执行对象的浅比较，因此`shallow` 函数返回`true`。它检查顶级属性及其值是否相同。在本例中，`objectLeft` 和 `objectRight` 之间的顶级属性（`firstName`、`lastName` 和`age`）及其值是相同的，因此`shallow` 认为它们相等。
 
 ```ts
 const objectLeft = {
@@ -108,15 +89,11 @@ Object.is(objectLeft, objectRight) // -> false
 shallow(objectLeft, objectRight) // -> true
 ```
 
-### Comparing Sets
+### 比较 Sets
 
-When comparing sets, it's important to understand how `Object.is` and `shallow` function operate,
-as they handle comparisons differently.
+比较集合时，了解 `Object.is` 和`shallow` 函数的操作方式非常重要，因为它们处理比较的方式不同。
 
-The `shallow` function returns `true` because shallow performs a shallow comparison of the sets. It
-checks if the top-level properties (in this case, the sets themselves) are the same. Since `setLeft`
-and `setRight` are both instances of the Set object and contain the same elements, shallow considers
-them equal.
+由于`shallow` 执行集合的浅比较，因此`shallow` 函数返回`true`。它检查顶级属性（在本例中为集合本身）是否相同。由于 `setLeft` 和 `setRight` 都是 Set 对象的实例并且包含相同的元素，因此`shallow` 认为它们相等。
 
 ```ts
 const setLeft = new Set([1, 2, 3])
@@ -126,15 +103,11 @@ Object.is(setLeft, setRight) // -> false
 shallow(setLeft, setRight) // -> true
 ```
 
-### Comparing Maps
+### 比较 Maps
 
-When comparing maps, it's important to understand how `Object.is` and `shallow` function operate, as
-they handle comparisons differently.
+比较映射时，了解 `Object.is` 和`shallow`函数的操作方式非常重要，因为它们处理比较的方式不同。
 
-The `shallow` returns `true` because shallow performs a shallow comparison of the maps. It checks if
-the top-level properties (in this case, the maps themselves) are the same. Since `mapLeft` and
-`mapRight` are both instances of the Map object and contain the same key-value pairs, shallow
-considers them equal.
+`shallow` 返回 `true`，因为浅层执行映射的浅层比较。它检查顶级属性（在本例中为映射本身）是否相同。由于`mapLeft`和`mapRight`都是`Map`对象的实例并且包含相同的键值对，因此shallow认为它们相等。
 
 ```ts
 const mapLeft = new Map([
@@ -152,18 +125,13 @@ Object.is(mapLeft, mapRight) // -> false
 shallow(mapLeft, mapRight) // -> true
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Comparing objects returns `false` even if they are identical.
+### 即使对象相同，比较对象也会返回 false
 
-The `shallow` function performs a shallow comparison. A shallow comparison checks if the top-level
-properties of two objects are equal. It does not check nested objects or deeply nested properties.
-In other words, it only compares the references of the properties.
+`shallow`函数执行浅层比较。浅比较检查两个对象的顶级属性是否相等。它不检查嵌套对象或深层嵌套属性。换句话说，它仅比较属性的引用。
 
-In the following example, the shallow function returns `false` because it compares only the
-top-level properties and their references. The address property in both objects is a nested object,
-and even though their contents are identical, their references are different. Consequently, shallow
-sees them as different, resulting in `false`.
+在以下示例中，shallow 函数返回 `false`，因为它仅比较顶级属性及其引用。两个对象中的地址属性都是嵌套对象，尽管它们的内容相同，但它们的引用不同。因此，浅薄的人认为它们是不同的，从而导致错误。
 
 ```ts
 const objectLeft = {
@@ -201,8 +169,7 @@ Object.is(objectLeft, objectRight) // -> false
 shallow(objectLeft, objectRight) // -> false
 ```
 
-If we remove the `address` property, the shallow comparison would work as expected because all
-top-level properties would be primitive values or references to the same values:
+如果我们删除`address` 属性，浅层比较将按预期工作，因为所有顶级属性都将是原始值或对相同值的引用：
 
 ```ts
 const objectLeft = {
@@ -220,7 +187,4 @@ Object.is(objectLeft, objectRight) // -> false
 shallow(objectLeft, objectRight) // -> true
 ```
 
-In this modified example, `objectLeft` and `objectRight` have the same top-level properties and
-primitive values. Since `shallow` function only compares the top-level properties, it will return
-`true` because the primitive values (`firstName`, `lastName`, and `age`) are identical in both
-objects.
+在此修改后的示例中，`objectLeft` 和 `objectRight` 具有相同的顶级属性和原始值。由于浅函数仅比较顶级属性，因此它将返回 `true`，因为两个对象中的原始值（`firstName`、`lastName` 和`age`）是相同的。
