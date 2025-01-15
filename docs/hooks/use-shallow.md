@@ -1,48 +1,38 @@
 ---
 title: useShallow ⚛️
-description: How to memoize selector functions
+description: useShallow 是一个 React Hook，可让您优化重新渲染。
 nav: 28
 ---
 
-`useShallow` is a React Hook that lets you optimize re-renders.
+`useShallow` 是一个 React Hook，可让您优化重新渲染。
 
 ```js
 const memoizedSelector = useShallow(selector)
 ```
 
-- [Types](#types)
-  - [Signature](#signature)
-- [Reference](#reference)
-- [Usage](#usage)
-  - [Writing a memoized selector](#writing-a-memoized-selector)
-- [Troubleshooting](#troubleshooting)
-
-### Signature
+### 签名
 
 ```ts
 useShallow<T, U = T>(selectorFn: (state: T) => U): (state: T) => U
 ```
 
-## Reference
+## 语法
 
 ### `useShallow(selectorFn)`
 
-#### Parameters
+#### 参数
 
-- `selectorFn`: A function that lets you return data that is based on current state.
+- `selectorFn`: 一个可让您返回基于当前状态的数据的函数。
 
-#### Returns
+#### 返回
 
-`useShallow` returns a memoized version of a selector function using a shallow comparison for
-memoization.
+`useShallow`：useShallow 使用浅比较进行记忆化，返回选择器函数的记忆化版本。
 
-## Usage
+## 用法
 
-### Writing a memoized selector
+### 编写记忆选择器
 
-First, we need to setup a store to hold the state for the bear family. In this store, we define
-three properties: `papaBear`, `mamaBear`, and `babyBear`, each representing a different member of
-the bear family and their respective oatmeal pot sizes.
+首先，我们需要建立一个商店来保存熊家族的状态。在这家商店中，我们定义了三个属性：`papaBear`、`mamaBear` 和 `BabyBear`，每个属性代表熊家族的不同成员及其各自的燕麦罐尺寸。
 
 ```tsx
 import { create } from 'zustand'
@@ -58,8 +48,7 @@ const useBearFamilyMealsStore = create<BearFamilyMealsStore>()(() => ({
 }))
 ```
 
-Next, we'll create a `BearNames` component that retrieves the keys of our state (the bear family
-members) and displays them.
+接下来，我们将创建一个 `BearNames` 组件，用于检索状态（熊家族成员）的键并显示它们。
 
 ```tsx
 function BearNames() {
@@ -69,8 +58,8 @@ function BearNames() {
 }
 ```
 
-Next, we will create a `UpdateBabyBearMeal` component that periodically updates baby bear's meal
-choice.
+接下来，我们将创建一个 U`pdateBabyBearMeal` 组件，定期更新小熊的膳食选择。
+
 
 ```tsx
 const meals = [
@@ -103,7 +92,7 @@ function UpdateBabyBearMeal() {
 }
 ```
 
-Finally, we combine both components in the `App` component to see them in action.
+最后，我们将这两个组件组合到 `App` 组件中以查看它们的运行情况。
 
 ```tsx
 export default function App() {
@@ -116,7 +105,7 @@ export default function App() {
 }
 ```
 
-Here is what the code should look like:
+代码应如下所示：
 
 ```tsx
 import { useEffect } from 'react'
@@ -177,12 +166,9 @@ export default function App() {
 }
 ```
 
-Everything might look fine, but there’s a small problem: the `BearNames` component keeps
-re-rendering even if the names haven’t changed. This happens because the component re-renders
-whenever any part of the state changes, even if the specific part we care about (the list of names) hasn’t changed.
+一切看起来都很好，但有一个小问题：即使名称没有更改，`BearNames` 组件也会不断重新渲染。发生这种情况是因为只要状态的任何部分发生变化，即使我们关心的特定部分（名称列表）没有改变，组件也会重新渲染。
 
-To fix this, we use `useShallow` to make sure the component only re-renders when the actual keys of
-the state change:
+为了解决这个问题，我们使用 `useShallow` 来确保组件仅在状态的实际键发生变化时重新渲染：
 
 ```tsx
 function BearNames() {
@@ -192,7 +178,7 @@ function BearNames() {
 }
 ```
 
-Here is what the code should look like:
+代码应如下所示：
 
 ```tsx
 import { useEffect } from 'react'
@@ -256,8 +242,7 @@ export default function App() {
 }
 ```
 
-By using `useShallow`, we optimized the rendering process, ensuring that the component only
-re-renders when necessary, which improves overall performance.
+通过使用 `useShallow`，我们优化了渲染过程，确保组件仅在必要时重新渲染，从而提高了整体性能。
 
 ## Troubleshooting
 
