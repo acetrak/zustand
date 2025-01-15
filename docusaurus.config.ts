@@ -93,10 +93,10 @@ const config: Config = {
     image: 'img/bear.jpg',
     navbar: {
       title: 'Zustand',
-      // logo: {
-      //   alt: 'Zustand Logo',
-      //   src: 'img/logo.svg',
-      // },
+      logo: {
+        alt: 'Zustand Logo',
+        src: 'img/favicon.ico',
+      },
       items: [
         {
           type: 'docSidebar',
@@ -105,6 +105,11 @@ const config: Config = {
           label: '教程',
         },
         { to: '/blog', label: '博客', position: 'left' },
+        {
+          to:'https://zustand.docs.pmnd.rs/getting-started/introduction',
+          label: 'v5.0.3',
+          position: 'right',
+        },
         // {
         //   href: 'https://github.com/facebook/docusaurus',
         //   label: 'GitHub',

@@ -1,11 +1,11 @@
 ---
-title: Connect to state with URL
+title: 使用 URL 连接到状态
 nav: 11
 ---
 
-## Connect State with URL Hash
+## 将状态与 URL 哈希连接起来
 
-If you want to connect state of a store to URL hash, you can create your own hash storage.
+如果您想将存储的状态连接到 URL 哈希，您可以创建自己的哈希存储。
 
 ```ts
 import { create } from 'zustand'
@@ -47,15 +47,13 @@ export const useBoundStore = create(
 
 https://codesandbox.io/s/zustand-state-with-url-hash-demo-f29b88?file=/src/store/index.ts
 
-## Persist and Connect State with URL Parameters (Example: URL Query Parameters)
+## 使用 URL 参数保留和连接状态（示例：URL 查询参数）
 
-There are times when you want to conditionally connect the state to the URL.
-This example depicts usage of the URL query parameters
-while keeping it synced with another persistence implementation, like `localstorage`.
+有时您希望有条件地将状态连接到 URL。此示例描述了 URL 查询参数的使用，同时使其与另一个持久性实现（例如 `localstorage`）保持同步。
 
-If you want the URL params to always populate, the conditional check on `getUrlSearch()` can be removed.
+如果您希望始终填充 URL 参数，则可以删除对 `getUrlSearch()` 的条件检查。
 
-The implementation below will update the URL in place, without refresh, as the relevant states change.
+当相关状态发生变化时，下面的实现将就地更新 URL，无需刷新。
 
 ```ts
 import { create } from 'zustand'
@@ -67,18 +65,18 @@ const getUrlSearch = () => {
 
 const persistentStorage: StateStorage = {
   getItem: (key): string => {
-    // Check URL first
+    // 首先检查网址
     if (getUrlSearch()) {
       const searchParams = new URLSearchParams(getUrlSearch())
       const storedValue = searchParams.get(key)
       return JSON.parse(storedValue as string)
     } else {
-      // Otherwise, we should load from localstorage or alternative storage
+      // 否则，我们应该从本地存储或替代存储加载
       return JSON.parse(localStorage.getItem(key) as string)
     }
   },
   setItem: (key, newValue): void => {
-    // Check if query params exist at all, can remove check if always want to set URL
+    // 检查查询参数是否存在，如果总是想设置 URL 可以删除检查
     if (getUrlSearch()) {
       const searchParams = new URLSearchParams(getUrlSearch())
       searchParams.set(key, JSON.stringify(newValue))
@@ -123,7 +121,7 @@ const useLocalAndUrlStore = create(
 export default useLocalAndUrlStore
 ```
 
-When generating the URL from a component, you can call buildShareableUrl:
+当从组件生成 URL 时，您可以调用 buildShareableUrl：
 
 ```ts
 const buildURLSuffix = (params, version = 0) => {
@@ -134,10 +132,10 @@ const buildURLSuffix = (params, version = 0) => {
       typesOfFish: params.typesOfFish,
       numberOfBears: params.numberOfBears,
     },
-    version: version, // version is here because that is included with how Zustand sets the state
+    version: version, // 版本在这里是因为它包含在 Zustand 设置状态的方式中
   }
 
-  // The URL param key should match the name of the store, as specified as in storageOptions above
+  // URL 参数键应与商店名称匹配，如上面 storageOptions 中指定的那样
   searchParams.set('fishAndBearsStore', JSON.stringify(zustandStoreParams))
   return searchParams.toString()
 }
@@ -147,6 +145,6 @@ export const buildShareableUrl = (params, version) => {
 }
 ```
 
-The generated URL would look like (here without any encoding, for readability):
+生成的 URL 看起来像这样（为了便于阅读，这里没有任何编码）
 
 `https://localhost/search?fishAndBearsStore={"state":{"typesOfFish":["tilapia","salmon"],"numberOfBears":15},"version":0}}`

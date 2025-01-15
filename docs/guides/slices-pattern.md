@@ -1,15 +1,15 @@
 ---
-title: Slices Pattern
+title: 切片模式
 nav: 14
 ---
 
-## Slicing the store into smaller stores
+## 将商店分割成更小的商店
 
-Your store can become bigger and bigger and tougher to maintain as you add more features.
+随着您添加更多功能，您的商店会变得越来越大，也越来越难以维护。
 
-You can divide your main store into smaller individual stores to achieve modularity. This is simple to accomplish in Zustand!
+您可以将主商店划分为较小的单独商店以实现模块化。这在 Zustand 中很容易完成！
 
-The first individual store:
+第一个store:
 
 ```js
 export const createFishSlice = (set) => ({
@@ -18,7 +18,7 @@ export const createFishSlice = (set) => ({
 })
 ```
 
-Another individual store:
+另一个store:
 
 ```js
 export const createBearSlice = (set) => ({
@@ -28,7 +28,7 @@ export const createBearSlice = (set) => ({
 })
 ```
 
-You can now combine both the stores into **one bounded store**:
+您现在可以将两个商店合并为**一个store**：
 
 ```js
 import { create } from 'zustand'
@@ -41,7 +41,7 @@ export const useBoundStore = create((...a) => ({
 }))
 ```
 
-### Usage in a React component
+### 在React组件中的用法
 
 ```jsx
 import { useBoundStore } from './stores/useBoundStore'
@@ -62,9 +62,9 @@ function App() {
 export default App
 ```
 
-### Updating multiple stores
+### 更新多个stores
 
-You can update multiple stores, at the same time, in a single function.
+您可以在一个函数中同时更新多个商店
 
 ```js
 export const createBearFishSlice = (set, get) => ({
@@ -75,7 +75,7 @@ export const createBearFishSlice = (set, get) => ({
 })
 ```
 
-Combining all the stores together is the same as before.
+和之前一样将所有stores合并在一起
 
 ```js
 import { create } from 'zustand'
@@ -90,11 +90,11 @@ export const useBoundStore = create((...a) => ({
 }))
 ```
 
-## Adding middlewares
+## 添加中间件
 
-Adding middlewares to a combined store is the same as with other normal stores.
+向组合存储添加中间件与其他普通存储相同。
 
-Adding `persist` middleware to our `useBoundStore`:
+将`persist`中间件添加到我们的 `useBoundStore` 中：:
 
 ```js
 import { create } from 'zustand'
@@ -113,8 +113,8 @@ export const useBoundStore = create(
 )
 ```
 
-Please keep in mind you should only apply middlewares in the combined store. Applying them inside individual slices can lead to unexpected issues.
+请记住，您应该只在组合商店中应用中间件。将它们应用到各个切片内可能会导致意想不到的问题。
 
-## Usage with TypeScript
+## 与TypeScript一起使用
 
-A detailed guide on how to use the slice pattern in Zustand with TypeScript can be found [here](./typescript.md#slices-pattern).
+有关如何通过 TypeScript 在 Zustand 中使用切片模式的详细指南可以在[此处](./typescript.md#slices-pattern)找到。

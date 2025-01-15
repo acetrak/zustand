@@ -245,12 +245,11 @@ Zustand 中间件可以改变存储。但是我们如何才能在类型级别上
 
 对于通常的静态类型语言来说，这是不可能的。但多亏了 TypeScript，Zustand 拥有一种称为“更高种类的变异器”的东西，使这成为可能。如果您正在处理复杂的类型问题，例如键入中间件或使用 `StateCreator` 类型，您将必须了解此实现细节。为此，您可以[查看 #710](https://github.com/pmndrs/zustand/issues/710)。
 
-
 如果您渴望知道这个特定问题的答案是什么，那么您可以在[这里](#middleware-that-changes-the-store-type)看到它。
 
-### Handling Dynamic `replace` Flag
+### 处理动态`replace`标志
 
-If the value of the `replace` flag is not known at compile time and is determined dynamically, you might face issues. To handle this, you can use a workaround by annotating the `replace` parameter with the parameters of the `setState` function:
+如果`replace`标志的值在编译时未知并且是动态确定的，您可能会遇到问题。为了解决这个问题，您可以通过使用 `setState` 函数的参数注释`replace`参数来使用解决方法：
 
 ```ts
 const replaceFlag = Math.random() > 0.5
@@ -260,7 +259,7 @@ const args = [{ bears: 5 }, replaceFlag] as Parameters<
 store.setState(...args)
 ```
 
-#### Example with `as Parameters` Workaround
+#### 带有 `as Parameters`的示例解决方法
 
 ```ts
 import { create } from 'zustand'
@@ -282,11 +281,11 @@ const args = [{ bears: 5 }, replaceFlag] as Parameters<
 useBearStore.setState(...args) // Using the workaround
 ```
 
-By following this approach, you can ensure that your code handles dynamic `replace` flags without encountering type issues.
+通过遵循此方法，您可以确保您的代码处理动态替换标志而不会遇到类型问题。
 
-## Common recipes
+## 常见食谱
 
-### Middleware that doesn't change the store type
+### 不改变存储类型的中间件
 
 ```ts
 import { create, StateCreator, StoreMutatorIdentifier } from 'zustand'
@@ -334,7 +333,7 @@ const useBearStore = create<BearState>()(
 )
 ```
 
-### Middleware that changes the store type
+### 改变存储类型的中间件
 
 ```ts
 import {
@@ -387,9 +386,9 @@ const useBearStore = create(foo(() => ({ bears: 0 }), 'hello'))
 console.log(useBearStore.foo.toUpperCase())
 ```
 
-### `create` without curried workaround
+### 不使用柯里化解决方法创建
 
-The recommended way to use `create` is using the curried workaround like so: `create<T>()(...)`. This is because it enables you to infer the store type. But if for some reason you do not want to use the workaround, you can pass the type parameters like the following. Note that in some cases, this acts as an assertion instead of annotation, so we don't recommend it.
+使用 `create` 的推荐方法是使用柯里化解决方法，如下所示：`create<T>()(...)`。这是因为它使您能够推断商店类型。但是，如果由于某种原因您不想使用该解决方法，则可以传递如下所示的类型参数。请注意，在某些情况下，这充当断言而不是注释，因此我们不推荐它。
 
 ```ts
 import { create } from "zustand"
@@ -411,7 +410,7 @@ const useBearStore = create<
 }), { name: 'bearStore' }))
 ```
 
-### Slices pattern
+### 切片模式
 
 ```ts
 import { create, StateCreator } from 'zustand'
@@ -476,11 +475,11 @@ const useBoundStore = create<BearSlice & FishSlice & SharedSlice>()((...a) => ({
 }))
 ```
 
-A detailed explanation on the slices pattern can be found [here](./slices-pattern.md).
+有关切片模式的详细说明可以在[此处](./slices-pattern.md)找到。
 
-If you have some middlewares then replace `StateCreator<MyState, [], [], MySlice>` with `StateCreator<MyState, Mutators, [], MySlice>`. For example, if you are using `devtools` then it will be `StateCreator<MyState, [["zustand/devtools", never]], [], MySlice>`. See the ["Middlewares and their mutators reference"](#middlewares-and-their-mutators-reference) section for a list of all mutators.
+如果您有一些中间件，则将 `StateCreator<MyState, [], [], MySlice>` 替换为 `StateCreator<MyState, Mutators, [], MySlice>`。例如，如果您使用 `devtools`，那么它将是 `StateCreator<MyState, [["zustand/devtools", never]], [], MySlice>`。有关所有变异器的列表，请参阅“中间件及其变异器参考”部分。
 
-### Bounded `useStore` hook for vanilla stores
+### 用于vanilla stores的有界 `useStore` Hook
 
 ```ts
 import { useStore } from 'zustand'
@@ -503,7 +502,7 @@ function useBearStore<T>(selector?: (state: BearState) => T) {
 }
 ```
 
-You can also make an abstract `createBoundedUseStore` function if you need to create bounded `useStore` hooks often and want to DRY things up...
+如果您需要经常创建有界 `useStore` 挂钩并希望干燥，您还可以创建一个抽象的 `createBoundedUseStore` 函数...
 
 ```ts
 import { useStore, StoreApi } from 'zustand'
@@ -532,12 +531,12 @@ type ExtractState<S> = S extends { getState: () => infer X } ? X : never
 const useBearStore = createBoundedUseStore(bearStore)
 ```
 
-## Middlewares and their mutators reference
+## 中间件及其修改器参考
 
 - `devtools` — `["zustand/devtools", never]`
 - `persist` — `["zustand/persist", YourPersistedState]`<br/>
-  `YourPersistedState` is the type of state you are going to persist, ie the return type of `options.partialize`, if you're not passing `partialize` options the `YourPersistedState` becomes `Partial<YourState>`. Also [sometimes](https://github.com/pmndrs/zustand/issues/980#issuecomment-1162289836) passing actual `PersistedState` won't work. In those cases, try passing `unknown`.
+  `YourPersistedState` 是你要持久化的状态类型，即 `options.partialize` 的返回类型，如果你不传递`partialize`选项，`YourPersistedState` 就会变成 `Partial<YourState>` 。有时传递实际的 `PersistedState` 也不起作用。在这些情况下，请尝试通过 `unknown`。
 - `immer` — `["zustand/immer", never]`
 - `subscribeWithSelector` — `["zustand/subscribeWithSelector", never]`
 - `redux` — `["zustand/redux", YourAction]`
-- `combine` — no mutator as `combine` does not mutate the store
+- `combine` — 没有变异器，因为`combine不会改变存储

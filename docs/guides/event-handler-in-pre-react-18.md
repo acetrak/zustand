@@ -1,10 +1,9 @@
 ---
-title: Calling actions outside a React event handler in pre React 18
+title: 在 React 18 之前的 React 事件处理程序之外调用操作
 nav: 9
 ---
 
-Because React handles `setState` synchronously if it's called outside an event handler, updating the state outside an event handler will force react to update the components synchronously. Therefore, there is a risk of encountering the zombie-child effect.
-In order to fix this, the action needs to be wrapped in `unstable_batchedUpdates` like so:
+因为如果在事件处理程序外部调用 `setState`，React 会同步处理 setState，所以在事件处理程序外部更新状态将强制 React 同步更新组件。因此，存在遭遇“僵尸儿童效应”的风险。为了解决这个问题，该操作需要包装在`unstable_batchedUpdates`中，如下所示：
 
 ```jsx
 import { unstable_batchedUpdates } from 'react-dom' // or 'react-native'
@@ -21,4 +20,4 @@ const nonReactCallback = () => {
 }
 ```
 
-More details: https://github.com/pmndrs/zustand/issues/302
+更多详细信息: https://github.com/pmndrs/zustand/issues/302

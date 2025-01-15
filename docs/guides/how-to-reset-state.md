@@ -1,14 +1,14 @@
 ---
-title: How to reset state
+title: 如何重置状态
 nav: 12
 ---
 
-The following pattern can be used to reset the state to its initial value.
+以下模式可用于将状态重置为其初始值。
 
 ```ts
 import { create } from 'zustand'
 
-// define types for state values and actions separately
+// 分别定义状态值和动作的类型
 type State = {
   salmon: number
   tuna: number
@@ -41,7 +41,7 @@ const useSlice = create<State & Actions>()((set, get) => ({
 }))
 ```
 
-Resetting multiple stores at once
+一次重置多个stores
 
 ```ts
 import type { StateCreator } from 'zustand'

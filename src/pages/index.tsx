@@ -19,6 +19,8 @@ export default function Home(): ReactNode {
         <meta charSet="utf-8" />
         <title>{siteConfig.title}</title>
         <link rel="canonical" href="https://zustand.acebook.cc" />
+        <meta data-rh="true" property="og:description" content="zustand教程， 如果你习惯了 Redux 或喜欢 React 的自然不可变更新，但期望 更加轻量、便捷 的状态管理方案那么试试它吧~"></meta>
+        <meta data-rh="true" name="keywords" content="zustand, react, zustand-react, state management, state sharing, 状态管理, 状态共享， 跨框架, 跨应用, 状态分享, state sharing, state-management"></meta>
       </Head>
 
       <main className={styles.container}>

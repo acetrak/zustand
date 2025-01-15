@@ -1,11 +1,11 @@
 ---
-title: Initialize state with props
+title: 使用 props 初始化状态
 nav: 13
 ---
 
-In cases where [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) is needed, such as when a store should be initialized with props from a component, the recommended approach is to use a vanilla store with React.context.
+在需要[依赖注入](https://en.wikipedia.org/wiki/Dependency_injection)的情况下，例如当应该使用组件中的 props 初始化存储时，推荐的方法是使用带有 React.context 的普通存储。
 
-## Store creator with `createStore`
+## 使用createStore创建Store
 
 ```ts
 import { createStore } from 'zustand'
@@ -32,7 +32,7 @@ const createBearStore = (initProps?: Partial<BearProps>) => {
 }
 ```
 
-## Creating a context with `React.createContext`
+## 使用`React.createContext`创建上下文
 
 ```ts
 import { createContext } from 'react'
@@ -40,7 +40,7 @@ import { createContext } from 'react'
 export const BearContext = createContext<BearStore | null>(null)
 ```
 
-## Basic component usage
+## 基本组件使用
 
 ```tsx
 // Provider implementation
@@ -75,9 +75,9 @@ function BasicConsumer() {
 }
 ```
 
-## Common patterns
+## 常见模式
 
-### Wrapping the context provider
+### 包装上下文提供者
 
 ```tsx
 // Provider wrapper
@@ -98,10 +98,10 @@ function BearProvider({ children, ...props }: BearProviderProps) {
 }
 ```
 
-### Extracting context logic into a custom hook
+### 将上下文逻辑提取到自定义挂钩中
 
 ```tsx
-// Mimic the hook returned by `create`
+// 模仿`create`返回的钩子
 import { useContext } from 'react'
 import { useStore } from 'zustand'
 
@@ -126,10 +126,10 @@ function CommonConsumer() {
 }
 ```
 
-### Optionally allow using a custom equality function
+### （可选）允许使用自定义相等函数
 
 ```tsx
-// Allow custom equality function by using useStoreWithEqualityFn instead of useStore
+// 使用 useStoreWithEqualityFn 而不是 useStore 允许自定义相等函数
 import { useContext } from 'react'
 import { useStoreWithEqualityFn } from 'zustand/traditional'
 
@@ -143,7 +143,7 @@ function useBearContext<T>(
 }
 ```
 
-### Complete example
+### 完整示例
 
 ```tsx
 // Provider wrapper & custom hook consumer
