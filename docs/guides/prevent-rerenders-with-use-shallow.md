@@ -1,19 +1,17 @@
 ---
-title: Prevent rerenders with useShallow
+title: 使用 useShallow 防止重新渲染
 nav: 15
 ---
 
-When you need to subscribe to a computed state from a store, the recommended way is to
-use a selector.
+当您需要从store订阅计算状态时，推荐的方法是使用选择器。
 
-The computed selector will cause a rerender if the output has changed according to [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is?retiredLocale=it).
+如果输出根据 [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is?retiredLocale=it) 发生更改，计算选择器将导致重新渲染。
 
-In this case you might want to use `useShallow` to avoid a rerender if the computed value is always shallow
-equal the previous one.
+在这种情况下，如果计算值始终浅等于前一个值，您可能希望使用 `useShallow` 来避免重新渲染
 
-## Example
+## 例子
 
-We have a store that associates to each bear a meal and we want to render their names.
+我们有一个store ，我们想呈现他们的名字。
 
 ```js
 import { create } from 'zustand'
@@ -31,7 +29,7 @@ export const BearNames = () => {
 }
 ```
 
-Now papa bear wants a pizza instead:
+现在熊爸爸想要一份披萨：
 
 ```js
 useMeals.setState({
@@ -39,9 +37,9 @@ useMeals.setState({
 })
 ```
 
-This change causes `BearNames` rerenders even though the actual output of `names` has not changed according to shallow equal.
+即使`names`的实际输出没有根据浅相等发生变化，此更改也会导致 `BearNames` 重新渲染。
 
-We can fix that using `useShallow`!
+我们可以使用 `useShallow` 来解决这个问题！
 
 ```js
 import { create } from 'zustand'
@@ -60,4 +58,4 @@ export const BearNames = () => {
 }
 ```
 
-Now they can all order other meals without causing unnecessary rerenders of our `BearNames` component.
+现在，他们都可以订购其他餐点，而不会导致我们的 `BearNames` 组件不必要的重新渲染。

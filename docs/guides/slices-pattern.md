@@ -94,7 +94,7 @@ export const useBoundStore = create((...a) => ({
 
 向组合存储添加中间件与其他普通存储相同。
 
-将`persist`中间件添加到我们的 `useBoundStore` 中：:
+将`persist`中间件添加到我们的 `useBoundStore` 中:
 
 ```js
 import { create } from 'zustand'

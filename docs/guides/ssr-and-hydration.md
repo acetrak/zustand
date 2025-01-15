@@ -1,25 +1,22 @@
 ---
-title: SSR and Hydration
+title: SSR和水合作用
 nav: 16
 ---
 
-## Server-side Rendering (SSR)
+## 服务器端渲染 (SSR)
 
-Server-side Rendering (SSR) is a technique that helps us render our components into
-HTML strings on the server, send them directly to the browser, and finally "hydrate" the
-static markup into a fully interactive app on the client.
+
+服务器端渲染 (SSR) 是一种技术，可帮助我们在服务器上将组件渲染为 HTML 字符串，将它们直接发送到浏览器，最后将静态标记“水化”为客户端上的完全交互式应用程序。
 
 ### React
 
-Let's say we want to render a stateless app using React. In order to do that, we need
-to use `express`, `react` and `react-dom/server`. We don't need `react-dom/client`
-since it's a stateless app.
+假设我们想使用 React 渲染一个无状态应用程序。为此，我们需要使用`express`、`react` 和`react-dom/server`。我们不需要`react-dom/client`，因为它是一个无状态应用程序。
 
-Let's dive into that:
+让我们深入探讨一下：
 
-- `express` helps us build a web app that we can run using Node,
-- `react` helps us build the UI components that we use in our app,
-- `react-dom/server` helps us render our components on a server.
+- `express` 帮助我们构建一个可以使用 Node 运行的 Web 应用程序，
+- `react` 帮助我们构建我们在应用程序中使用的 UI 组件，
+- `react-dom/server` 帮助我们在服务器上渲染组件。
 
 ```json
 // tsconfig.json
@@ -35,7 +32,9 @@ Let's dive into that:
 }
 ```
 
-> **Note:** do not forget to remove all comments from your `tsconfig.json` file.
+:::warning
+不要忘记删除 `tsconfig.json` 文件中的所有注释。
+:::
 
 ```tsx
 // app.tsx
@@ -90,23 +89,22 @@ node server.js
 
 ## Hydration
 
-Hydration turns the initial HTML snapshot from the server into a fully interactive app
-that runs in the browser. The right way to "hydrate" a component is by using `hydrateRoot`.
+Hydration 将来自服务器的初始 HTML 快照转换为在浏览器中运行的完全交互式应用程序。 “水合”组件的正确方法是使用 `HydroRoot`。
 
 ### React
 
-Let's say we want to render a stateful app using React. In order to do that we need to
-use `express`, `react`, `react-dom/server` and `react-dom/client`.
+假设我们想使用 React 渲染一个有状态的应用程序。为此，我们需要使用`express`、`react`、`react-dom/server` 和`react-dom/client`。
 
-Let's dive into that:
+让我们深入探讨一下：
 
-- `express` helps us build a web app that we can run using Node,
-- `react` helps us build the UI components that we use in our app,
-- `react-dom/server` helps us render our components on a server,
-- `react-dom/client` helps us hydrate our components on a client.
+- `express` 帮助我们构建一个可以使用 Node 运行的 Web 应用程序，
+- `react` 帮助我们构建我们在应用程序中使用的 UI 组件，
+- `react-dom/server` 帮助我们在服务器上渲染组件，
+- `react-dom/client` 帮助我们在客户端上补充我们的组件。
 
-> **Note:** Do not forget that even if we can render our components on a server, it is
-> important to "hydrate" them on a client to make them interactive.
+:::warning
+不要忘记，即使我们可以在服务器上渲染我们的组件，重要的是在客户端上“hydrate”它们以使它们具有交互性。
+:::
 
 ```json
 // tsconfig.json
@@ -122,7 +120,9 @@ Let's dive into that:
 }
 ```
 
-> **Note:** do not forget to remove all comments in your `tsconfig.json` file.
+:::warning
+不要忘记删除 `tsconfig.json` 文件中的所有注释。
+:::
 
 ```tsx
 // app.tsx
@@ -185,14 +185,15 @@ tsc --build
 node server.js
 ```
 
-> **Warning:** The React tree you pass to `hydrateRoot` needs to produce the same output as it did on the server.
-> The most common causes leading to hydration errors include:
->
-> - Extra whitespace (like newlines) around the React-generated HTML inside the root node.
-> - Using checks like typeof window !== 'undefined' in your rendering logic.
-> - Using browser-only APIs like `window.matchMedia` in your rendering logic.
-> - Rendering different data on the server and the client.
->
-> React recovers from some hydration errors, but you must fix them like other bugs. In the best case, they’ll lead to a slowdown; in the worst case, event handlers can get attached to the wrong elements.
+:::warning
+传递给 HydroRoot 的 React 树需要产生与服务器上相同的输出。导致水合错误的最常见原因包括：
 
-You can read more about the caveats and pitfalls here: [hydrateRoot](https://react.dev/reference/react-dom/client/hydrateRoot)
+- 根节点内 React 生成的 HTML 周围有额外的空格（如换行符）。
+- 在渲染逻辑中使用像 `typeof window !== 'undefined'` 这样的检查。
+- 在渲染逻辑中使用仅限浏览器的 API，例如 `window.matchMedia`。
+- 在服务器和客户端上呈现不同的数据。
+
+React 可以从一些水合错误中恢复，但您必须像其他错误一样修复它们。在最好的情况下，它们会导致经济放缓；在最坏的情况下，事件处理程序可能会附加到错误的元素。
+:::
+
+您可以在此处阅读有关警告和陷阱的更多信息： [hydrateRoot](https://react.dev/reference/react-dom/client/hydrateRoot)

@@ -1,40 +1,23 @@
 ---
-title: Setup with Next.js
+title: 在Next.js上使用
 nav: 17
 ---
 
-[Next.js](https://nextjs.org) is a popular server-side rendering framework for React that presents
-some unique challenges for using Zustand properly.
-Keep in mind that Zustand store is a global
-variable (AKA module state) making it optional to use a `Context`.
-These challenges include:
+[Next.js](https://nextjs.org) 是一种流行的 React 服务器端渲染框架，它为正确使用 Zustand 带来了一些独特的挑战。请记住，Zustand 存储是一个全局变量（也称为模块状态），因此可以选择使用上下文。这些挑战包括：
 
-- **Per-request store:** A Next.js server can handle multiple requests simultaneously. This means
-  that the store should be created per request and should not be shared across requests.
-- **SSR friendly:** Next.js applications are rendered twice, first on the server
-  and again on the client. Having different outputs on both the client and the server will result
-  in "hydration errors." The store will have to be initialized on the server and then
-  re-initialized on the client with the same data in order to avoid that. Please read more about
-  that in our [SSR and Hydration](./ssr-and-hydration) guide.
-- **SPA routing friendly:** Next.js supports a hybrid model for client side routing, which means
-  that in order to reset a store, we need to initialize it at the component level using a
-  `Context`.
-- **Server caching friendly:** Recent versions of Next.js (specifically applications using the App
-  Router architecture) support aggressive server caching. Due to our store being a **module state**,
-  it is completely compatible with this caching.
+- **按请求存储:** Next.js 服务器可以同时处理多个请求。这意味着应该根据请求创建存储，并且不应在请求之间共享。
+- **SSR 友好:** Next.js 应用程序会渲染两次，首先在服务器上，然后在客户端上。客户端和服务器上的输出不同将导致“水合错误”。必须在服务器上初始化存储，然后使用相同的数据在客户端上重新初始化，以避免这种情况。请在我们的 [SSR and Hydration](./ssr-and-hydration)指南中阅读更多相关信息。
+- **SPA 路由友好:** Next.js 支持客户端路由的混合模型，这意味着为了重置存储，我们需要使用 `Context` 在组件级别对其进行初始化。
+- **服务器缓存友好:** Next.js 的最新版本（特别是使用 App Router 架构的应用程序）支持积极的服务器缓存。由于我们的存储是 **module state**，因此它与此缓存完全兼容。
 
-We have these general recommendations for the appropriate use of Zustand:
+对于正确使用 Zustand，我们有以下一般建议：
 
-- **No global stores** - Because the store should not be shared across requests, it should not be defined
-  as a global variable. Instead, the store should be created per request.
-- **React Server Components should not read from or write to the store** - RSCs cannot use hooks or context. They aren't
-  meant to be stateful. Having an RSC read from or write values to a global store violates the
-  architecture of Next.js.
+- **无全局存储** - 因为存储不应在请求之间共享，所以不应将其定义为全局变量。相反，应该根据请求创建store 。
+- **React 服务器组件不应读取或写入存储** - RSC 不能使用钩子或上下文。它们并不意味着是有状态的。让 RSC 从全局存储读取值或向全局存储写入值违反了 Next.js 的架构。
 
-### Creating a store per request
+### 根据请求创建store
 
-Let's write our store factory function that will create a new store for each
-request.
+让我们编写store工厂函数，为每个请求创建一个新的store。
 
 ```json
 // tsconfig.json
@@ -66,7 +49,9 @@ request.
 }
 ```
 
-> **Note:** do not forget to remove all comments from your `tsconfig.json` file.
+:::warning
+不要忘记删除 tsconfig.json 文件中的所有注释。
+:::
 
 ```ts
 // src/stores/counter-store.ts
@@ -98,9 +83,9 @@ export const createCounterStore = (
 }
 ```
 
-### Providing the store
+### 提供store
 
-Let's use the `createCounterStore` in our component and share it using a context provider.
+让我们在组件中使用 `createCounterStore` 并使用上下文提供程序共享它。
 
 ```tsx
 // src/providers/counter-store-provider.tsx
@@ -149,13 +134,11 @@ export const useCounterStore = <T,>(
 }
 ```
 
-> **Note:** In this example, we ensure that this component is re-render-safe by checking the
-> value of the reference, so that the store is only created once. This component will only be
-> rendered once per request on the server, but might be re-rendered multiple times on the client if
-> there are stateful client components located above this component in the tree, or if this component
-> also contains other mutable state that causes a re-render.
+:::tip
+在此示例中，我们通过检查引用的值来确保该组件是重新渲染安全的，以便存储仅创建一次。对于服务器上的每个请求，此组件只会呈现一次，但如果树中此组件上方有有状态客户端组件，或者此组件还包含其他可变状态，则可能会在客户端上重新呈现多次重新渲染。
+:::
 
-### Initializing the store
+### 初始化store
 
 ```ts
 // src/stores/counter-store.ts
@@ -242,12 +225,9 @@ export const useCounterStore = <T,>(
 }
 ```
 
-### Using the store with different architectures
+### 使用具有不同架构的Store
 
-There are two architectures for a Next.js application: the
-[Pages Router](https://nextjs.org/docs/pages/building-your-application/routing) and the
-[App Router](https://nextjs.org/docs/app/building-your-application/routing). The usage of Zustand on
-both architectures should be the same with slight differences related to each architecture.
+Next.js 应用程序有两种架构：[Pages Router](https://nextjs.org/docs/pages/building-your-application/routing) 和 [App Router](https://nextjs.org/docs/app/building-your-application/routing)。 Zustand 在两种架构上的用法应该是相同的，只是与每种架构相关的细微差别。
 
 #### Pages Router
 
@@ -299,9 +279,9 @@ export default function Home() {
 }
 ```
 
-> **Note:** creating a store per route would require creating and sharing the store
-> at page (route) component level. Try not to use this if you do not need to create
-> a store per route.
+:::warning
+注意：为每个路由创建一个存储需要在页面（路由）组件级别创建和共享存储。如果您不需要为每个路由创建一个商店，请尽量不要使用此选项。
+:::
 
 ```tsx
 // src/pages/index.tsx
@@ -384,9 +364,9 @@ export default function Home() {
 }
 ```
 
-> **Note:** creating a store per route would require creating and sharing the store
-> at page (route) component level. Try not to use this if you do not need to create
-> a store per route.
+:::warning
+为每个路由创建一个存储需要在页面（路由）组件级别创建和共享存储。如果您不需要为每个路由创建一个商店，请尽量不要使用此选项。
+:::
 
 ```tsx
 // src/app/page.tsx
