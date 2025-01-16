@@ -1,33 +1,26 @@
 ---
 title: subscribeWithSelector
-description: How to subscribe to granular store updates in a store
+description: 如何订阅store中的精细store更新
 nav: 210
 ---
 
 # subscribeWithSelector
 
-`subscribeWithSelector` middleware lets you subscribe to specific data based on current state.
+`subscribeWithSelector` 中间件可让您根据当前状态订阅特定数据。
 
 ```js
 const nextStateCreatorFn = subscribeWithSelector(stateCreatorFn)
 ```
 
-- [Types](#types)
-  - [Signature](#signature)
-  - [Mutator](#mutator)
-- [Reference](#reference)
-- [Usage](#usage)
-- [Troubleshooting](#troubleshooting)
+## 类型
 
-## Types
-
-### Signature
+### 签名
 
 ```ts
 subscribeWithSelector<T>(stateCreatorFn: StateCreator<T, [], []>): StateCreator<T, [['zustand/subscribeWithSelector', never]], []>
 ```
 
-### Mutator
+### 突变体
 
 <!-- prettier-ignore-start -->
 ```ts
@@ -35,25 +28,23 @@ subscribeWithSelector<T>(stateCreatorFn: StateCreator<T, [], []>): StateCreator<
 ```
 <!-- prettier-ignore-end -->
 
-## Reference
+## 语法
 
 ### `subscribeWithSelector(stateCreatorFn)`
 
-#### Parameters
+#### 参数
 
-- `stateCreatorFn`: A function that takes `set` function, `get` function and `store` as arguments.
-  Usually, you will return an object with the methods you want to expose.
+- `stateCreatorFn`: 一个以 `set` 函数、`get` 函数和 `store` 作为参数的函数。通常，您将返回一个带有您想要公开的方法的对象。
 
-#### Returns
+#### 返回
 
-`subscribeWithSelector` returns a state creator function.
+`subscribeWithSelector` 返回一个状态创建器函数。
 
-## Usage
+## 用法
 
-### Subscribing partial state updates
+### 订阅部分状态更新
 
-By subscribing to partial state updates, you register a callback that fires whenever the store's
-partial state updates. We can use `subscribe` for external state management.
+通过订阅部分状态更新，您可以注册一个回调，每当商店的部分状态更新时就会触发该回调。我们可以使用 `subscribe` 进行外部状态管理。
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -102,7 +93,7 @@ const logger: Parameters<typeof positionStore.subscribe>[0] = (x) => {
 positionStore.subscribe((state) => state.position.x, logger)
 ```
 
-Here's the `html` code
+这是html代码
 
 ```html
 <div
@@ -116,6 +107,6 @@ Here's the `html` code
 </div>
 ```
 
-## Troubleshooting
+## 故障排除
 
-TBD
+待定

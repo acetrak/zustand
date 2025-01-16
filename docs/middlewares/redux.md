@@ -1,34 +1,26 @@
 ---
 title: redux
-description: How to use actions and reducers in a store
+description: 如何在store中使用actions和reducers
 nav: 208
 ---
 
 # redux
 
-`redux` middleware lets you update a store through actions and reducers just like redux.
+`redux` 中间件允许您像 redux 一样通过操作和化简器更新存储。
 
 ```js
 const nextStateCreatorFn = redux(reducerFn, initialState)
 ```
 
-- [Types](#types)
-  - [Signature](#signature)
-  - [Mutator](#mutator)
-- [Reference](#reference)
-- [Usage](#usage)
-  - [Updating state through actions and reducers](#updating-state-through-actions-and-reducers)
-- [Troubleshooting](#troubleshooting)
+## 类型
 
-## Types
-
-### Signature
+### 签名
 
 ```ts
 redux<T, A>(reducerFn: (state: T, action: A) => T, initialState: T): StateCreator<T & { dispatch: (action: A) => A }, [['zustand/redux', A]], []>
 ```
 
-### Mutator
+### 突变体
 
 <!-- prettier-ignore-start -->
 ```ts
@@ -36,24 +28,22 @@ redux<T, A>(reducerFn: (state: T, action: A) => T, initialState: T): StateCreato
 ```
 <!-- prettier-ignore-end -->
 
-## Reference
+## 语法
 
 ### `redux(reducerFn, initialState)`
 
-#### Parameters
+#### 参数
 
-- `reducerFn`: It should be pure and should take the current state of your application and an action
-  object as arguments, and returns the new state resulting from applying the action.
-- `initialState`: The value you want the state to be initially. It can be a value of any type,
-  except a function.
+- `reducerFn`: 它应该是纯的，并且应该将应用程序的当前状态和操作对象作为参数，并返回应用操作所产生的新状态。
+- `initialState`: 您希望初始状态的值。它可以是任何类型的值，函数除外。
 
-#### Returns
+#### 返回
 
-`redux` returns a state creator function.
+`redux` 返回一个状态创建器函数。
 
-## Usage
+## 用法
 
-### Updating state through actions and reducers
+### 通过actions和reducers更新状态
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -147,7 +137,7 @@ render(personStore.getInitialState(), personStore.getInitialState())
 personStore.subscribe(render)
 ```
 
-Here's the `html` code
+这是`html`代码
 
 ```html
 <label style="display: block">
@@ -165,6 +155,6 @@ Here's the `html` code
 <p id="result"></p>
 ```
 
-## Troubleshooting
+## 故障排除
 
-TBD
+待定
