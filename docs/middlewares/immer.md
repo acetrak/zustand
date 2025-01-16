@@ -1,33 +1,26 @@
 ---
 title: immer
-description: How to perform immutable updates in a store without boilerplate code
+description: 如何在没有样板代码的情况下在store中执行不可变更新
 nav: 206
 ---
 
 # immer
 
-`immer` middleware lets you perform immutable updates.
+`immer`中间件可让您执行不可变的更新。
 
 ```js
 const nextStateCreatorFn = immer(stateCreatorFn)
 ```
 
-- [Types](#types)
-  - [Signature](#signature)
-  - [Mutator](#mutator)
-- [Reference](#reference)
-- [Usage](#usage)
-- [Troubleshooting](#troubleshooting)
+## 类型
 
-## Types
-
-### Signature
+### 签名
 
 ```ts
 immer<T>(stateCreatorFn: StateCreator<T, [], []>): StateCreator<T, [['zustand/immer', never]], []>
 ```
 
-### Mutator
+### 突变体
 
 <!-- prettier-ignore-start -->
 ```ts
@@ -35,25 +28,23 @@ immer<T>(stateCreatorFn: StateCreator<T, [], []>): StateCreator<T, [['zustand/im
 ```
 <!-- prettier-ignore-end -->
 
-## Reference
+## 语法
 
 ### `immer(stateCreatorFn)`
 
-#### Parameters
+#### 参数
 
-- `stateCreatorFn`: A function that takes `set` function, `get` function and `store` as arguments.
-  Usually, you will return an object with the methods you want to expose.
+- `stateCreatorFn`: 一个以 `set` 函数、`get` 函数和 `store` 作为参数的函数。通常，您将返回一个带有您想要公开的方法的对象。
 
-#### Returns
+#### 返回
 
-`immer` returns a state creator function.
+`immer` 返回一个状态创建器函数。
 
-## Usage
+## 使用
 
-### Updating state without boilerplate code
+### 无需样板代码即可更新状态
 
-In the next example, we're going to update the `person` object. Since it's a nested object, we need
-to create a copy of the entire object before making the update.
+在下一个示例中，我们将更新 `person` 对象。由于它是一个嵌套对象，因此我们需要在更新之前创建整个对象的副本。
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -132,7 +123,7 @@ render(personStore.getInitialState(), personStore.getInitialState())
 personStore.subscribe(render)
 ```
 
-Here's the `html` code
+这是`html`代码
 
 ```html
 <label style="display: block">
@@ -150,8 +141,7 @@ Here's the `html` code
 <p id="result"></p>
 ```
 
-To avoid manually copying the entire object before making updates, we'll use the `immer`
-middleware.
+为了避免在更新之前手动复制整个对象，我们将使用 `immer` 中间件。
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -227,6 +217,6 @@ render(personStore.getInitialState(), personStore.getInitialState())
 personStore.subscribe(render)
 ```
 
-## Troubleshooting
+## 故障排除
 
-TBD
+待定

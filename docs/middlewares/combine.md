@@ -1,59 +1,47 @@
 ---
 title: combine
-description: How to create a store and get types automatically inferred
+description: 如何创建store并自动推断类型
 nav: 201
 ---
 
 # combine
 
-`combine` middleware lets you create a cohesive state by merging an initial state with a state
-creator function that adds new state slices and actions. This is really helpful as it automatically
-infers types, so there’s no need for explicit type definitions.
+`combine`中间件允许您通过将初始状态与添加新状态切片和操作的状态创建器函数合并来创建内聚状态。这非常有用，因为它会自动推断类型，因此不需要显式类型定义。
 
-> [!TIP]
-> This makes state management more straightforward and efficient by making curried version of
-> `create` and `createStore` not necessary for middleware usage.
+:::tip
+这使得中间件使用不需要 `create` 和 `createStore` 的柯里化版本，从而使状态管理更加简单和高效。
+:::
 
 ```js
 const nextStateCreatorFn = combine(initialState, additionalStateCreatorFn)
 ```
 
-- [Types](#types)
-  - [Signature](#combine-signature)
-- [Reference](#reference)
-- [Usage](#usage)
-  - [Creating a state with inferred types](#creating-a-state-wit-inferred-types)
-- [Troubleshooting](#troubleshooting)
+## 类型
 
-## Types
-
-### Signature
+### 签名
 
 ```ts
 combine<T, U>(initialState: T, additionalStateCreatorFn: StateCreator<T, [], [], U>): StateCreator<Omit<T, keyof U> & U, [], []>
 ```
 
-## Reference
+## 语法
 
 ### `combine(initialState, additionalStateCreatorFn)`
 
-#### Parameters
+#### 参数
 
-- `initialState`: The value you want the state to be initially. It can be a value of any type,
-  except a function.
-- `additionalStateCreatorFn`: A function that takes `set` function, `get` function and `store` as
-  arguments. Usually, you will return an object with the methods you want to expose.
+- `initialState`: 您希望初始状态的值。它可以是任何类型的值，函数除外。
+- `additionalStateCreatorFn`: 一个以 `set` 函数、`get` 函数和 `store` 作为参数的函数。通常，您将返回一个带有您想要公开的方法的对象。
 
-#### Returns
+#### 返回
 
-`combine` returns a state creator function.
+`combine` 返回一个状态创建器函数。
 
-## Usage
+## 使用
 
-### Creating a store with inferred types
+### 使用推断类型创建商店
 
-This example shows you how you can create a store and get types automatically inferred, so you
-don’t need to define them explicitly.
+此示例向您展示如何创建存储并自动推断类型，因此您无需显式定义它们。
 
 ```ts
 import { createStore } from 'zustand/vanilla'
@@ -84,7 +72,7 @@ render(positionStore.getInitialState(), positionStore.getInitialState())
 positionStore.subscribe(render)
 ```
 
-Here's the `html` code
+这是`html`代码
 
 ```html
 <div
@@ -98,6 +86,6 @@ Here's the `html` code
 </div>
 ```
 
-## Troubleshooting
+## 故障排除
 
-TBD
+待定

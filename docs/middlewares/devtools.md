@@ -1,38 +1,26 @@
 ---
 title: devtools
-description: How to time-travel debug your store
+description: 如何进行时间旅行调试您的store 
 nav: 205
 ---
 
 # devtools
 
-`devtools` middleware lets you use [Redux DevTools Extension](https://github.com/reduxjs/redux-devtools)
-without Redux. Read more about the benefits of using [Redux DevTools for debugging](https://redux.js.org/style-guide/#use-the-redux-devtools-extension-for-debugging).
+`devtools` 中间件允许您在没有 Redux 的情况下使用 [Redux DevTools 扩展](https://github.com/reduxjs/redux-devtools)。详细了解使用 [Redux DevTools 进行调试](https://redux.js.org/style-guide/#use-the-redux-devtools-extension-for-debugging)的好处。
 
 ```js
 const nextStateCreatorFn = devtools(stateCreatorFn, devtoolsOptions)
 ```
 
-- [Types](#types)
-  - [Signature](#signature)
-  - [Mutator](#mutator)
-- [Reference](#reference)
-- [Usage](#usage)
-  - [Debugging a store](#debugging-a-store)
-  - [Debugging a Slices pattern based store](#debugging-a-slices-pattern-based-store)
-- [Troubleshooting](#troubleshooting)
-  - [Only one store is displayed](#only-one-store-is-displayed)
-  - [Action names are labeled as 'anonymous'](#all-action-names-are-labeled-as-anonymous)
+## 类型
 
-## Types
-
-### Signature
+### 签名
 
 ```ts
 devtools<T>(stateCreatorFn: StateCreator<T, [], []>, devtoolsOptions?: DevtoolsOptions): StateCreator<T, [['zustand/devtools', never]], []>
 ```
 
-### Mutator
+### 突变体
 
 <!-- prettier-ignore-start -->
 ```ts
@@ -40,32 +28,28 @@ devtools<T>(stateCreatorFn: StateCreator<T, [], []>, devtoolsOptions?: DevtoolsO
 ```
 <!-- prettier-ignore-end -->
 
-## Reference
+## 语法
 
 ### `devtools(stateCreatorFn, devtoolsOptions)`
 
-#### Parameters
+#### 参数
 
-- `stateCreatorFn`: A function that takes `set` function, `get` function and `store` as arguments.
-  Usually, you will return an object with the methods you want to expose.
-- **optional** `devtoolsOptions`: An object to define `Redux Devtools` options.
-  - **optional** `name`: A custom identifier for the connection in the Redux DevTools.
-  - **optional** `enabled`: Defaults to `true` when is on development mode, and defaults to `false`
-    when is on production mode. Enables or disables the Redux DevTools integration
-    for this store.
-  - **optional** `anonymousActionType`: Defaults to `anonymous`. A string to use as the action type
-    for anonymous mutations in the Redux DevTools.
-  - **optional** `store`: A custom identifier for the store in the Redux DevTools.
+- `stateCreatorFn`: 一个以 `set` 函数、`get` 函数和 `store` 作为参数的函数。通常，您将返回一个带有您想要公开的方法的对象。
+- **可选** `devtoolsOptions`: 用于定义 `Redux Devtools` 选项的对象
+  - **可选** `name`: Redux DevTools 中连接的自定义标识符。
+  - **可选** `enabled`: 处于开发模式时默认为 `true`，处于生产模式时默认为 `false`。启用或禁用此商店的 Redux DevTools 集成。
+  - **可选** `anonymousActionType`: 默认为`anonymous`。用作 Redux DevTools 中匿名突变的操作类型的字符串。
+  - **可选** `store`: Redux DevTools 中存储的自定义标识符。
 
-#### Returns
+#### 返回
 
-`devtools` returns a state creator function.
+`devtools`  返回一个状态创建器函数。
 
-## Usage
+## 用法
 
-### Debugging a store
+### 调试store
 
-This example shows you how you can use `Redux Devtools` to debug a store
+此示例向您展示如何使用 Redux Devtools 调试store
 
 ```ts
 import { create, StateCreator } from 'zustand'
@@ -94,9 +78,9 @@ const useJungleStore = create<JungleStore>()(
 )
 ```
 
-### Debugging a Slices pattern based store
+### 调试基于切片模式的store
 
-This example shows you how you can use `Redux Devtools` to debug a Slices pattern based store
+此示例向您展示如何使用 `Redux Devtools` 调试基于 Slices 模式的存储
 
 ```ts
 import { create, StateCreator } from 'zustand'
@@ -152,19 +136,17 @@ const useJungleStore = create<JungleStore>()(
 )
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Only one store is displayed
+### 仅显示一个store
 
-By default, `Redux Devtools` only show one store at a time, so in order to see other stores you
-need to use store selector and choose a different store.
+默认情况下，`Redux Devtools` 一次仅显示一个商店，因此为了查看其他商店，您需要使用商店选择器并选择不同的商店。
 
-### All action names are labeled as 'anonymous'
+### 所有操作名称都标记为'anonymous'
 
-If an action type name is not provided, it is defaulted to "anonymous". You can customize this
-default value by providing a `anonymousActionType` parameter:
+如果未提供操作类型名称，则默认为“匿名”。您可以通过提供 `anonymousActionType` 参数来自定义此默认值：
 
-For instance the next example doesn't have action type name:
+例如，下一个示例没有操作类型名称：
 
 ```ts
 import { create, StateCreator } from 'zustand'
@@ -211,11 +193,9 @@ const useJungleStore = create<JungleStore>()(
 )
 ```
 
-In order to fix the previous example, we need to provide an action type name as the third parameter.
-Additionally, to preserve the default behavior of the replacement logic, the second parameter
-should be set to `undefined`.
+为了修复前面的示例，我们需要提供一个操作类型名称作为第三个参数。此外，为了保留替换逻辑的默认行为，第二个参数应设置为`undefined`。
 
-Here's the fixed previous example
+这是之前的固定示例
 
 ```ts
 import { create, StateCreator } from 'zustand'
@@ -262,6 +242,6 @@ const useJungleStore = create<JungleStore>()(
 )
 ```
 
-> [!IMPORTANT]
-> Do not set the second parameter to `true` or `false` unless you want to override the default
-> replacement logic
+:::warning
+不要将第二个参数设置为 `true` 或 `false`，除非您想覆盖默认的替换逻辑
+:::

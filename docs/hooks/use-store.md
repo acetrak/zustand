@@ -1,53 +1,41 @@
 ---
 title: useStore ⚛️
-description: How to use vanilla stores in React
+description: useStore 是一个 React Hook，可让您在 React 中使用普通存储。
 nav: 30
 ---
 
-`useStore` is a React Hook that lets you use a vanilla store in React.
+`useStore` 是一个 React Hook，可让您在 React 中使用普通存储。
 
 ```js
 const someState = useStore(store, selectorFn)
 ```
 
-- [Types](#types)
-  - [Signature](#signature)
-- [Reference](#reference)
-- [Usage](#usage)
-  - [Use a vanilla store in React](#use-a-vanilla-store-in-react)
-  - [Using dynamic vanilla stores in React](#using-dynamic-global-vanilla-stores-in-react)
-  - [Using scoped (non-global) vanilla store in React](#using-scoped-non-global-vanilla-store-in-react)
-  - [Using dynamic scoped (non-global) vanilla stores in React](#using-dynamic-scoped-non-global-vanilla-stores-in-react)
-- [Troubleshooting](#troubleshooting)
+## 类型
 
-## Types
-
-### Signature
+### 签名
 
 ```ts
 useStore<StoreApi<T>, U = T>(store: StoreApi<T>, selectorFn?: (state: T) => U) => UseBoundStore<StoreApi<T>>
 ```
 
-## Reference
+## 语法
 
 ### `useStore(store, selectorFn)`
 
-#### Parameters
+#### 参数
 
-- `storeApi`: The instance that lets you access to store API utilities.
-- `selectorFn`: A function that lets you return data that is based on current state.
+- `storeApi`: 允许您访问存储 API 实用程序的实例。
+- `selectorFn`: 一个可让您返回基于当前状态的数据的函数。
 
-#### Returns
+#### 返回
 
-`useStore` returns any data based on current state depending on the selector function. It should
-take a store, and a selector function as arguments.
+`useStore` 根据选择器函数返回基于当前状态的任何数据。它应该接受一个存储和一个选择器函数作为参数。
 
-## Usage
+## 用法
 
-### Using a global vanilla store in React
+### 在 React 中使用全局原生存储
 
-First, let's set up a store that will hold the position of the dot on the screen. We'll define the
-store to manage `x` and `y` coordinates and provide an action to update these coordinates.
+首先，让我们设置一个存储点来保存屏幕上的点的位置。我们将定义存储来管理 `x` 和 `y` 坐标并提供更新这些坐标的操作。
 
 ```tsx
 type PositionStoreState = { position: { x: number; y: number } }
@@ -64,8 +52,7 @@ const positionStore = createStore<PositionStore>()((set) => ({
 }))
 ```
 
-Next, we'll create a `MovingDot` component that renders a div representing the dot. This component
-will use the store to track and update the dot's position.
+接下来，我们将创建一个 `MovingDot` 组件，用于呈现代表点的 div。该组件将使用存储来跟踪和更新点的位置。
 
 ```tsx
 function MovingDot() {
@@ -103,7 +90,7 @@ function MovingDot() {
 }
 ```
 
-Finally, we’ll render the `MovingDot` component in our `App` component.
+最后，我们将在 `App` 组件中渲染 `MovingDot` 组件。
 
 ```tsx
 export default function App() {
@@ -168,10 +155,9 @@ export default function App() {
 }
 ```
 
-### Using dynamic global vanilla stores in React
+### 在 React 中使用动态全局原生存储
 
-First, we'll create a factory function that generates a store for managing the counter state.
-Each tab will have its own instance of this store.
+首先，我们将创建一个工厂函数，它生成一个用于管理计数器状态的存储。每个选项卡都有自己的该商店实例。
 
 ```ts
 type CounterState = {
@@ -192,8 +178,7 @@ const createCounterStore = () => {
 }
 ```
 
-Next, we'll create a factory function that manages the creation and retrieval of counter stores.
-This allows each tab to have its own independent counter.
+接下来，我们将创建一个工厂函数来管理柜台商店的创建和检索。这允许每个选项卡都有自己独立的计数器。
 
 ```ts
 const defaultCounterStores = new Map<
@@ -216,8 +201,7 @@ const getOrCreateCounterStoreByKey =
   createCounterStoreFactory(defaultCounterStores)
 ```
 
-Now, let’s build the Tabs component, where users can switch between tabs and increment each tab’s
-counter.
+现在，让我们构建选项卡组件，用户可以在选项卡之间切换并增加每个选项卡的计数器。
 
 ```tsx
 const [currentTabIndex, setCurrentTabIndex] = useState(0)
@@ -280,8 +264,7 @@ return (
 )
 ```
 
-Finally, we'll create the `App` component, which renders the tabs and their respective counters.
-The counter state is managed independently for each tab.
+最后，我们将创建 `App` 组件，它呈现选项卡及其各自的计数器。每个选项卡的计数器状态都是独立管理的
 
 ```tsx
 export default function App() {
@@ -289,7 +272,7 @@ export default function App() {
 }
 ```
 
-Here is what the code should look like:
+代码应如下所示：
 
 ```tsx
 import { useState } from 'react'
@@ -393,10 +376,9 @@ export default function App() {
 }
 ```
 
-### Using scoped (non-global) vanilla store in React
+### 在 React 中使用作用域（非全局）普通存储
 
-First, let's set up a store that will hold the position of the dot on the screen. We'll define the
-store to manage `x` and `y` coordinates and provide an action to update these coordinates.
+首先，让我们设置一个存储点来保存屏幕上的点的位置。我们将定义存储来管理 `x` 和 `y` 坐标并提供更新这些坐标的操作。
 
 ```tsx
 type PositionStoreState = { position: { x: number; y: number } }
@@ -415,8 +397,7 @@ const createPositionStore = () => {
 }
 ```
 
-Next, we'll create a context and a provider component to pass down the store through the React
-component tree. This allows each `MovingDot` component to have its own independent state.
+接下来，我们将创建一个上下文和一个提供程序组件，以通过 React 组件树向下传递存储。这允许每个 `MovingDot` 组件拥有自己的独立状态。
 
 ```tsx
 const PositionStoreContext = createContext<ReturnType<
@@ -434,8 +415,7 @@ function PositionStoreProvider({ children }: { children: ReactNode }) {
 }
 ```
 
-To simplify accessing the store, we’ll create a React custom hook, `usePositionStore`. This hook
-will read the store from the context and allow us to select specific parts of the state.
+为了简化对商店的访问，我们将创建一个 React 自定义钩子 `usePositionStore`。这个钩子将从上下文中读取存储并允许我们选择状态的特定部分。
 
 ```ts
 function usePositionStore<U>(selector: (state: PositionStore) => U) {
@@ -451,8 +431,7 @@ function usePositionStore<U>(selector: (state: PositionStore) => U) {
 }
 ```
 
-Now, let's create the `MovingDot` component, which will render a dot that follows the mouse cursor
-within its container.
+现在，让我们创建 `MovingDot` 组件，它将在其容器内呈现一个跟随鼠标光标的点。
 
 ```tsx
 function MovingDot({ color }: { color: string }) {
@@ -493,8 +472,7 @@ function MovingDot({ color }: { color: string }) {
 }
 ```
 
-Finally, we'll bring everything together in the `App` component, where we render two `MovingDot`
-components, each with its own independent state.
+最后，我们将在 `App` 组件中将所有内容整合在一起，在其中渲染两个 `MovingDot` 组件，每个组件都有自己的独立状态。
 
 ```tsx
 export default function App() {
@@ -511,7 +489,7 @@ export default function App() {
 }
 ```
 
-Here is what the code should look like:
+代码应如下所示：
 
 ```tsx
 import { type ReactNode, useState, createContext, useContext } from 'react'
@@ -609,10 +587,9 @@ export default function App() {
 }
 ```
 
-### Using dynamic scoped (non-global) vanilla stores in React
+### 在 React 中使用动态范围（非全局）普通存储
 
-First, we'll create a factory function that generates a store for managing the counter state.
-Each tab will have its own instance of this store.
+首先，我们将创建一个工厂函数，它生成一个用于管理计数器状态的存储。每个选项卡都有自己的该商店实例。
 
 ```ts
 import { createStore } from 'zustand'
@@ -635,8 +612,7 @@ const createCounterStore = () => {
 }
 ```
 
-Next, we'll create a factory function that manages the creation and retrieval of counter stores.
-This allows each tab to have its own independent counter.
+接下来，我们将创建一个工厂函数来管理柜台商店的创建和检索。这允许每个选项卡都有自己独立的计数器。
 
 ```ts
 const createCounterStoreFactory = (
@@ -651,8 +627,7 @@ const createCounterStoreFactory = (
 }
 ```
 
-Next, we need a way to manage and access these stores throughout our app. We’ll use React’s context
-for this.
+接下来，我们需要一种方法来在我们的应用程序中管理和访问这些商店。为此，我们将使用 React 的上下文。
 
 ```tsx
 const CounterStoresContext = createContext(null)
@@ -670,8 +645,8 @@ const CounterStoresProvider = ({ children }) => {
 }
 ```
 
-Now, we’ll create a custom hook, `useCounterStore`, that lets us access the correct store for a
-given tab.
+
+现在，我们将创建一个自定义挂钩 `useCounterStore`，它允许我们访问给定选项卡的正确存储。
 
 ```tsx
 const useCounterStore = <U>(
@@ -693,8 +668,7 @@ const useCounterStore = <U>(
 }
 ```
 
-Now, let’s build the Tabs component, where users can switch between tabs and increment each tab’s
-counter.
+现在，让我们构建选项卡组件，用户可以在选项卡之间切换并增加每个选项卡的计数器。
 
 ```tsx
 function Tabs() {
@@ -760,8 +734,7 @@ function Tabs() {
 }
 ```
 
-Finally, we'll create the `App` component, which renders the tabs and their respective counters.
-The counter state is managed independently for each tab.
+最后，我们将创建 `App` 组件，它呈现选项卡及其各自的计数器。每个选项卡的计数器状态都是独立管理的。
 
 ```tsx
 export default function App() {
@@ -773,7 +746,7 @@ export default function App() {
 }
 ```
 
-Here is what the code should look like:
+代码应如下所示：
 
 ```tsx
 import {
@@ -919,6 +892,6 @@ export default function App() {
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
 TBD
