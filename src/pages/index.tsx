@@ -47,7 +47,7 @@ export default function Home(): ReactNode {
           </div>
 
           <footer className={styles.footer}>
-            <p>该网站并非官方中文文档</p>
+            <p className={styles.p}>该网站并非官方中文文档</p>
           </footer>
         </div>
       </main>
